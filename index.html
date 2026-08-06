@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HCM Tech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0E14;
+    --paper:#FAFAFB;
+    --teal:#0EA894;
+    --teal-dark:#0B8879;
+    --amber:#F2A63E;
+    --line:rgba(11,14,20,0.08);
+    --slate:#5B6169;
+    --mint:#EAFBF7;
+    --glass:rgba(255,255,255,0.7);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:
+      radial-gradient(1100px 500px at 15% -10%, rgba(14,168,148,0.14), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(242,166,62,0.10), transparent 55%),
+      var(--paper);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.02em; }
+  a{ color:inherit; text-decoration:none; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  .wrap{ max-width:800px; margin:0 auto; padding:0 24px; }
+
+  header{
+    position:sticky; top:0; z-index:20; padding:18px 0;
+    background:var(--glass); backdrop-filter:blur(14px) saturate(160%);
+    border-bottom:1px solid var(--line);
+  }
+  header .wrap{ display:flex; align-items:center; justify-content:space-between; }
+  .brand{ font-weight:700; font-size:1.02rem; display:flex; align-items:center; gap:9px; }
+  .brand img{ width:30px; height:30px; border-radius:9px; object-fit:cover; box-shadow:0 2px 8px rgba(11,14,20,0.15); }
+  .navlink{ font-size:0.78rem; color:var(--slate); background:#fff; border:1px solid var(--line); padding:4px 11px; border-radius:20px; }
+
+  .hero{ padding:64px 0 48px; text-align:center; position:relative; }
+  .hero img.face{
+    width:104px; height:104px; border-radius:50%; object-fit:cover; margin-bottom:22px;
+    box-shadow:0 12px 32px -8px rgba(14,168,148,0.35), 0 0 0 6px #fff, 0 0 0 7px var(--line);
+  }
+  .kicker{
+    display:inline-flex; align-items:center; gap:7px; font-family:'IBM Plex Mono', monospace; font-size:0.75rem;
+    color:var(--teal-dark); background:var(--mint); padding:6px 14px; border-radius:20px; margin-bottom:22px;
+    border:1px solid rgba(14,168,148,0.2);
+  }
+  .kicker::before{ content:"●"; font-size:0.55rem; animation:pulse 1.8s infinite; }
+  @keyframes pulse{ 50%{ opacity:0.25; } }
+  h1{ font-size:2.5rem; font-weight:700; line-height:1.14; margin-bottom:16px; }
+  h1 .grad{
+    background:linear-gradient(100deg, var(--teal) 0%, #0C7A6D 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero p.sub{ font-size:1.08rem; color:var(--slate); max-width:500px; margin:0 auto 30px; }
+  .btnrow{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .btn{ padding:13px 24px; border-radius:10px; font-weight:600; font-size:0.93rem; display:inline-block; transition:all .18s ease; }
+  .btn-dark{ background:var(--ink); color:#fff; box-shadow:0 6px 18px -4px rgba(11,14,20,0.35); }
+  .btn-dark:hover{ transform:translateY(-2px); box-shadow:0 10px 24px -4px rgba(11,14,20,0.4); }
+  .btn-line{ background:#fff; border:1px solid var(--line); box-shadow:0 1px 2px rgba(11,14,20,0.04); }
+  .btn-line:hover{ border-color:var(--ink); transform:translateY(-2px); }
+
+  /* demo tool card */
+  .demo{ margin:56px 0; }
+  .demo-card{
+    background:linear-gradient(180deg, #ffffff 0%, var(--mint) 140%);
+    border:1px solid rgba(14,168,148,0.18); border-radius:20px; padding:36px;
+    box-shadow:0 24px 60px -24px rgba(14,168,148,0.35), 0 1px 2px rgba(11,14,20,0.03);
+  }
+  .demo-label{ font-family:'IBM Plex Mono', monospace; font-size:0.74rem; color:var(--teal-dark); margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+  .demo-label::before{ content:"▸"; }
+  .demo-card h3{ font-size:1.3rem; margin-bottom:8px; }
+  .demo-card > p{ color:var(--slate); font-size:0.94rem; margin-bottom:24px; }
+  .demo-q{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:12px; box-shadow:0 1px 3px rgba(11,14,20,0.03); }
+  .demo-q label{ display:block; font-size:0.87rem; font-weight:600; margin-bottom:9px; }
+  .demo-q select, .demo-q input{
+    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-family:'Inter'; font-size:0.9rem;
+    background:#fbfbfc;
+  }
+  .demo-q select:focus, .demo-q input:focus{ outline:2px solid var(--teal); outline-offset:1px; }
+  .demo-btn{
+    background:linear-gradient(100deg, var(--teal), var(--teal-dark)); color:#fff; border:none;
+    padding:13px 20px; border-radius:10px; font-weight:600; font-size:0.92rem; cursor:pointer; width:100%;
+    box-shadow:0 8px 20px -6px rgba(14,168,148,0.5); transition:transform .15s;
+  }
+  .demo-btn:hover{ transform:translateY(-1px); }
+  .demo-result{
+    margin-top:16px; padding:18px 20px; background:#fff; border:1px dashed rgba(14,168,148,0.35); border-radius:12px;
+    font-size:0.9rem; color:var(--ink); display:none; line-height:1.6;
+  }
+  .demo-result.show{ display:block; animation:fadeIn .3s ease; }
+  @keyframes fadeIn{ from{ opacity:0; transform:translateY(4px);} to{ opacity:1; transform:translateY(0);} }
+
+  /* pillars */
+  .pillars{ margin:56px 0; }
+  h2.section{ font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--slate); margin-bottom:22px; font-weight:600; }
+  .pillar-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .pillar{
+    background:#fff; border:1px solid var(--line); border-radius:16px; padding:26px;
+    box-shadow:0 2px 8px rgba(11,14,20,0.03); transition:transform .2s, box-shadow .2s;
+  }
+  .pillar:hover{ transform:translateY(-3px); box-shadow:0 16px 32px -12px rgba(11,14,20,0.12); }
+  .pillar .n{ font-family:'IBM Plex Mono', monospace; font-size:0.74rem; color:var(--amber); margin-bottom:12px; font-weight:500; }
+  .pillar h3{ font-size:1.08rem; margin-bottom:8px; }
+  .pillar p{ font-size:0.9rem; color:var(--slate); margin-bottom:14px; }
+  .pillar a{ font-size:0.86rem; font-weight:600; color:var(--teal-dark); border-bottom:1.5px solid var(--teal); padding-bottom:1px; }
+
+  /* portfolio */
+  .portfolio{ margin:56px 0; }
+  .portfolio-list{ list-style:none; background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:0 2px 8px rgba(11,14,20,0.03); }
+  .portfolio-list li{
+    display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid var(--line); font-size:0.94rem;
+  }
+  .portfolio-list li:last-child{ border-bottom:none; }
+  .status{ font-size:0.74rem; color:var(--teal-dark); font-family:'IBM Plex Mono', monospace; background:var(--mint); padding:4px 10px; border-radius:20px; }
+  .status.open{ color:var(--slate); background:#F2F2F3; }
+
+  footer{ border-top:1px solid var(--line); padding:30px 0 40px; margin-top:24px; }
+  footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  footer .note{ font-size:0.82rem; color:var(--slate); }
+  footer .social a{ margin-left:16px; font-size:0.86rem; color:var(--slate); transition:color .15s; }
+  footer .social a:hover{ color:var(--teal-dark); }
+
+  @media (max-width:520px){
+    h1{ font-size:1.8rem; }
+    .pillar-grid{ grid-template-columns:1fr; }
+    .demo-card{ padding:24px; }
+    footer .wrap{ flex-direction:column; align-items:flex-start; }
+    footer .social a{ margin-left:0; margin-right:14px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand"><img src="data:image/jpeg;base64,/9j/4QEaRXhpZgAATU0AKgAAAAgABgEAAAQAAAABAAADPgEBAAQAAAABAAAD+AExAAIAAAAmAAAAVgEyAAIAAAAUAAAAfAESAAMAAAABAAEAAIdpAAQAAAABAAAAkAAAAABBbmRyb2lkIEJQ[...]
+    <div class="navlink mono">v1</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <img class="face" src="data:image/jpeg;base64,/9j/4QEaRXhpZgAATU0AKgAAAAgABgEAAAQAAAABAAADPgEBAAQAAAABAAAD+AExAAIAAAAmAAAAVgEyAAIAAAAUAAAAfAESAAMAAAABAAEAAIdpAAQAAAABAAAAkAAAAABBbmRyb2lkIEJQNEEuMj[...]
+    <div class="kicker">psst — your super probably has a leak</div>
+    <h1>Australian money, <span class="grad">explained.</span><br>Not sold to you.</h1>
+    <p class="sub">Plain-English guides to how money actually works in Australia — plus small, useful tools that fix one annoying problem at a time. No jargon. No upsell. Try the tool below.</p>
+    <div class="btnrow">
+      <a href="https://www.youtube.com/@hcmtechyoutube" target="_blank" rel="noopener" class="btn btn-dark">Watch the videos</a>
+      <a href="#portfolio" class="btn btn-line">See what's built</a>
+    </div>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="wrap">
+    <div class="demo-card">
+      <div class="demo-label mono">try it — takes 10 seconds</div>
+      <h3>Are you leaking money on super fees?</h3>
+      <p>Answer honestly. This runs entirely in your browser — nothing is sent anywhere.</p>
+      <div class="demo-q">
+        <label>How many jobs have you had in Australia?</label>
+        <select id="jobs">
+          <option value="1">Just one</option>
+          <option value="2">Two or three</option>
+          <option value="4">Four or more</option>
+        </select>
+      </div>
+      <div class="demo-q">
+        <label>Have you ever checked if you have more than one super account?</label>
+        <select id="checked">
+          <option value="no">No, never</option>
+          <option value="unsure">Not sure</option>
+          <option value="yes">Yes, I checked</option>
+        </select>
+      </div>
+      <button class="demo-btn" onclick="checkLeak()">Check my risk</button>
+      <div class="demo-result" id="result"></div>
+    </div>
+  </div>
+</section>
+
+<section class="pillars">
+  <div class="wrap">
+    <h2 class="section">what this is</h2>
+    <div class="pillar-grid">
+      <div class="pillar">
+        <div class="n mono">01</div>
+        <h3>Finance, Explained</h3>
+        <p>Short videos on super, credit, tax, and scams — from someone with real Australian banking experience. Plain English, always.</p>
+        <a href="https://www.youtube.com/@hcmtechyoutube" target="_blank" rel="noopener">Watch on YouTube →</a>
+      </div>
+      <div class="pillar">
+        <div class="n mono">02</div>
+        <h3>Small, Useful Tools</h3>
+        <p>Free tools that solve one specific problem well — like the one above. Built in the open, no login required.</p>
+        <a href="#portfolio">See the portfolio →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="portfolio" id="portfolio">
+  <div class="wrap">
+    <h2 class="section">portfolio</h2>
+    <ul class="portfolio-list">
+      <li><span>Super Fee Leak Checker</span> <span class="status">live — v1</span></li>
+      <li><span>Next tool</span> <span class="status open">open</span></li>
+      <li><span>Your project?</span> <span class="status open">get in touch</span></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="note mono">HCM Tech — finance content + tools that don't waste your time</div>
+    <div class="social">
+      <a href="https://x.com/hcmtechx" target="_blank" rel="noopener">X</a>
+      <a href="https://www.youtube.com/@hcmtechyoutube" target="_blank" rel="noopener">YouTube</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function checkLeak(){
+  const jobs = document.getElementById('jobs').value;
+  const checked = document.getElementById('checked').value;
+  const box = document.getElementById('result');
+  let msg = '';
+  if(checked === 'yes'){
+    msg = "Nice — you're already ahead of most people. Worth double-checking once a year, jobs change fast.";
+  } else if(jobs === '1' && checked !== 'yes'){
+    msg = "Low risk, but still worth a 2-minute check — log into myGov → ATO → Super, just to be sure.";
+  } else {
+    msg = "You're a strong candidate for a super fee leak. Multiple jobs usually means multiple accounts, and each one charges fees. Go to myGov → ATO → Super and check for duplicates — could sa[...]
+  }
+  box.innerText = msg;
+  box.classList.add('show');
+}
+</script>
+
+</body>
+</html>
