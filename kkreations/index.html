@@ -52,12 +52,12 @@
   .trust-row{margin-top:22px; display:flex; gap:20px; flex-wrap:wrap; font-size:0.82rem; color:var(--cream-dim);}
   .trust-row strong{color:var(--gold); font-family:'Fraunces',serif; font-size:0.98rem; display:block;}
   .hero-visual{display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:10px; aspect-ratio:1/1;}
-  .tile{border-radius:var(--radius); display:flex; align-items:flex-end; padding:14px; font-family:'Fraunces', serif; font-size:0.9rem; font-weight:600; color:var(--cream); position:relative; overflow:hidden;}
+  .tile{border-radius:var(--radius); display:flex; align-items:flex-end; padding:14px; font-family:'Fraunces', serif; font-size:0.9rem; font-weight:600; color:var(--cream); position:relative; overflow:hidden; background-size:cover; background-position:center;}
   .tile span{position:relative; z-index:2;}
-  .tile::after{content:""; position:absolute; inset:0; background:rgba(0,0,0,0.18);}
-  .t1{background:linear-gradient(135deg,#E15B72,#C23B54); grid-row:1/3;}
-  .t2{background:linear-gradient(135deg,#CB9B4A,#A97A2E);}
-  .t3{background:linear-gradient(135deg,#8A9A5B,#5F6E3B);}
+  .tile::after{content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,0,0,0.55), rgba(0,0,0,0.05));}
+  .t1{grid-row:1/3; background-image:url('images/grazing_platter_close.jpg');}
+  .t2{background-image:url('images/cupcake_cream.jpg');}
+  .t3{background-image:url('images/cupcake_teal.jpg');}
 
   section{padding:64px 0;}
   .section-head{max-width:60ch; margin-bottom:36px;}
@@ -76,8 +76,8 @@
   .menu-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:20px;}
   .menu-card{background:var(--bg-alt); border:1px solid rgba(247,236,221,0.08); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column;}
   .menu-card .swatch{height:130px; display:flex; align-items:center; justify-content:center; font-family:'Fraunces', serif; font-style:italic; color:rgba(247,236,221,0.75); font-size:0.82rem;}
-  .s-graze{background:linear-gradient(135deg,#5F6E3B,#3D471F);}
-  .s-cupcake{background:linear-gradient(135deg,#E15B72,#9A2E43);}
+  .s-graze{background-image:url('images/grazing_wide.jpg'); background-size:cover; background-position:center;}
+  .s-cupcake{background-image:url('images/cupcake_yellow_pink.jpg'); background-size:cover; background-position:center;}
   .s-strawberry{background:linear-gradient(135deg,#C23B54,#7A1F30);}
   .s-numbercake{background:linear-gradient(135deg,#CB9B4A,#8A6423);}
   .s-donut{background:linear-gradient(135deg,#A97A2E,#5F4116);}
@@ -270,6 +270,28 @@
   .chat-input-row input{flex:1; background:var(--bg); border:1px solid rgba(247,236,221,0.18); color:var(--cream); padding:9px 12px; border-radius:999px; font-size:0.85rem;}
   .chat-send{background:var(--berry); border:none; color:var(--cream); width:36px; height:36px; border-radius:50%; cursor:pointer; flex-shrink:0;}
   .chat-send:hover{background:var(--berry-deep);}
+
+  /* ---- Gallery ---- */
+  .gallery-group{margin-bottom:36px;}
+  .gallery-group h3{font-size:1rem; color:var(--gold); margin-bottom:14px; font-family:'Fraunces',serif;}
+  .gallery-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px;}
+  .gallery-thumb{
+    aspect-ratio:1/1; border-radius:6px; overflow:hidden; cursor:pointer; border:none; padding:0;
+    background-size:cover; background-position:center; position:relative;
+  }
+  .gallery-thumb::after{content:"⤢"; position:absolute; top:8px; right:8px; color:#fff; background:rgba(0,0,0,0.4); width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.9rem; opacity:0; transition:opacity 0.2s;}
+  .gallery-thumb:hover::after{opacity:1;}
+  .lightbox{
+    display:none; position:fixed; inset:0; background:rgba(20,12,8,0.94); z-index:90;
+    align-items:center; justify-content:center; flex-direction:column; padding:20px;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:min(700px, 90vw); max-height:70vh; border-radius:6px; object-fit:contain;}
+  .lightbox-controls{display:flex; align-items:center; gap:24px; margin-top:18px;}
+  .lb-btn{background:transparent; border:1px solid rgba(247,236,221,0.3); color:var(--cream); width:42px; height:42px; border-radius:50%; cursor:pointer; font-size:1.1rem;}
+  .lb-btn:hover{border-color:var(--gold); color:var(--gold);}
+  .lb-close{position:absolute; top:20px; right:24px; background:none; border:none; color:var(--cream); font-size:1.6rem; cursor:pointer;}
+  .lb-caption{color:var(--cream-dim); font-size:0.85rem; margin-top:12px;}
 </style>
 </head>
 <body>
@@ -279,6 +301,7 @@
     <div class="logo">KKreations <span>World</span></div>
     <nav class="nav-links">
       <a href="#menu">Menu</a>
+      <a href="#gallery">Gallery</a>
       <a href="#order">Order</a>
       <a href="#track">Track Order</a>
       <a href="#reviews">Reviews</a>
@@ -322,6 +345,7 @@
       <h2>Baked with a little home-kitchen stubbornness</h2>
       <p>KKreations World started the way most good things do — friends asking for "just one more" grazing box for their next party. What began on Instagram is now a full spread of custom cakes, cupcake bouquets, strawberry towers and grazing boxes, each one built by hand for the date on your calendar.</p>
       <p>Every order is made fresh in small batches, so what you see is genuinely what you get — no factory shortcuts, no filler ingredients.</p>
+      <img src="images/brand_banner.jpg" alt="KKreations World stall at a Sydney market" style="border-radius:6px; margin:16px 0; max-width:280px; border:1px solid rgba(247,236,221,0.15);">
       <div class="tag-list">
         <span class="tag">Number &amp; letter cakes</span>
         <span class="tag">Bundt cakes</span>
@@ -352,7 +376,7 @@
     </div>
     <div class="menu-grid">
       <div class="menu-card">
-        <div class="swatch s-graze">grazing box</div>
+        <div class="swatch s-graze"></div>
         <div class="menu-body">
           <h3>Grazing Platters &amp; Boxes</h3>
           <p>Sweet or savoury spreads built for sharing — perfect for parties, office catering or a night in.</p>
@@ -361,7 +385,7 @@
         </div>
       </div>
       <div class="menu-card">
-        <div class="swatch s-cupcake">cupcake bouquet</div>
+        <div class="swatch s-cupcake"></div>
         <div class="menu-body">
           <h3>Cupcake Bouquets</h3>
           <p>A bunch of hand-decorated cupcakes arranged like fresh flowers — a gift that's actually eaten.</p>
@@ -564,6 +588,45 @@
   </div>
 </section>
 
+<section id="gallery">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Gallery</p>
+      <h2>A closer look</h2>
+      <p>Real pieces from real orders — tap any photo to see it larger.</p>
+    </div>
+
+    <div class="gallery-group">
+      <h3>Grazing Platters &amp; Boxes</h3>
+      <div class="gallery-grid" id="gal-grazing">
+        <button class="gallery-thumb" style="background-image:url('images/grazing_wide.jpg')" onclick="openLightbox('grazing',0)"></button>
+        <button class="gallery-thumb" style="background-image:url('images/grazing_box_birthday.jpg')" onclick="openLightbox('grazing',1)"></button>
+        <button class="gallery-thumb" style="background-image:url('images/grazing_platter_close.jpg')" onclick="openLightbox('grazing',2)"></button>
+      </div>
+    </div>
+
+    <div class="gallery-group">
+      <h3>Cupcake Bouquets</h3>
+      <div class="gallery-grid" id="gal-cupcake">
+        <button class="gallery-thumb" style="background-image:url('images/cupcake_cream.jpg')" onclick="openLightbox('cupcake',0)"></button>
+        <button class="gallery-thumb" style="background-image:url('images/cupcake_teal.jpg')" onclick="openLightbox('cupcake',1)"></button>
+        <button class="gallery-thumb" style="background-image:url('images/cupcake_yellow_pink.jpg')" onclick="openLightbox('cupcake',2)"></button>
+        <button class="gallery-thumb" style="background-image:url('images/cupcake_babyshower.jpg')" onclick="openLightbox('cupcake',3)"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt="">
+  <div class="lightbox-controls">
+    <button class="lb-btn" onclick="navLightbox(-1)">‹</button>
+    <button class="lb-btn" onclick="navLightbox(1)">›</button>
+  </div>
+  <div class="lb-caption" id="lightboxCaption"></div>
+</div>
+
 <section id="reviews" class="bg-panel">
   <div class="wrap">
     <div class="section-head">
@@ -710,6 +773,48 @@
 </div>
 
 <script>
+  /* ---------- Gallery lightbox ---------- */
+  const GALLERIES = {
+    grazing: {
+      title: 'Grazing Platters & Boxes',
+      images: ['images/grazing_wide.jpg','images/grazing_box_birthday.jpg','images/grazing_platter_close.jpg']
+    },
+    cupcake: {
+      title: 'Cupcake Bouquets',
+      images: ['images/cupcake_cream.jpg','images/cupcake_teal.jpg','images/cupcake_yellow_pink.jpg','images/cupcake_babyshower.jpg']
+    }
+  };
+  let currentGallery = null, currentIndex = 0;
+
+  function openLightbox(galleryKey, index){
+    currentGallery = galleryKey;
+    currentIndex = index;
+    renderLightbox();
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  function navLightbox(dir){
+    const imgs = GALLERIES[currentGallery].images;
+    currentIndex = (currentIndex + dir + imgs.length) % imgs.length;
+    renderLightbox();
+  }
+  function renderLightbox(){
+    const g = GALLERIES[currentGallery];
+    document.getElementById('lightboxImg').src = g.images[currentIndex];
+    document.getElementById('lightboxCaption').textContent = g.title + ' — ' + (currentIndex+1) + ' of ' + g.images.length;
+  }
+  document.getElementById('lightbox').addEventListener('click', (e)=>{
+    if(e.target.id === 'lightbox'){ closeLightbox(); }
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(!document.getElementById('lightbox').classList.contains('open')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowLeft') navLightbox(-1);
+    if(e.key === 'ArrowRight') navLightbox(1);
+  });
+
   function toggleChat(){
     document.getElementById('chatPanel').classList.toggle('open');
   }
