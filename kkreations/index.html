@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KKreations World — Grazing, Cakes & Sweet Treats, Sydney</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#2B1B14; --bg-alt:#3A2419; --panel:#40281C;
+    --cream:#F7ECDD; --cream-dim:#D9C7B4;
+    --berry:#E15B72; --berry-deep:#C23B54;
+    --gold:#CB9B4A; --sage:#8A9A5B;
+    --radius:2px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg); color:var(--cream); font-family:'Work Sans', -apple-system, sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.display{font-family:'Fraunces', Georgia, serif; font-weight:600; line-height:1.08; letter-spacing:-0.01em;}
+  a{color:inherit;}
+  .wrap{max-width:1100px; margin:0 auto; padding:0 24px;}
+  .eyebrow{font-family:'Work Sans', sans-serif; text-transform:uppercase; letter-spacing:0.16em; font-size:0.72rem; color:var(--gold); font-weight:600;}
+
+  .scallop{width:100%; height:22px; background:radial-gradient(circle at 11px 0, transparent 12px, var(--bg-alt) 12.5px) 0 -11px / 22px 22px repeat-x;}
+  .scallop.to-panel{background:radial-gradient(circle at 11px 0, transparent 12px, var(--panel) 12.5px) 0 -11px / 22px 22px repeat-x;}
+  .scallop.to-bg{background:radial-gradient(circle at 11px 0, transparent 12px, var(--bg) 12.5px) 0 -11px / 22px 22px repeat-x;}
+  .scallop.flip{transform:scaleY(-1);}
+
+  header{position:sticky; top:0; z-index:50; background:rgba(43,27,20,0.94); backdrop-filter:blur(6px); border-bottom:1px solid rgba(247,236,221,0.08);}
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:1100px; margin:0 auto; flex-wrap:wrap; gap:10px;}
+  .logo{font-family:'Fraunces', serif; font-weight:700; font-size:1.25rem;}
+  .logo span{color:var(--berry);}
+  .nav-links{display:flex; gap:22px; font-size:0.88rem; flex-wrap:wrap;}
+  .nav-links a{text-decoration:none; opacity:0.85;}
+  .nav-links a:hover{opacity:1; color:var(--gold);}
+  .nav-cta{background:var(--berry); color:var(--cream); text-decoration:none; padding:10px 18px; border-radius:var(--radius); font-weight:600; font-size:0.86rem; white-space:nowrap;}
+  @media (max-width:820px){ .nav-links{display:none;} }
+
+  .hero{padding:56px 0 48px; background:linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);}
+  .hero-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;}
+  @media (max-width:820px){ .hero-grid{grid-template-columns:1fr;} }
+  .hero h1{font-size:clamp(2rem, 4.6vw, 3rem); margin:12px 0 16px;}
+  .hero h1 em{font-style:italic; color:var(--berry);}
+  .hero p.lead{font-size:1.02rem; color:var(--cream-dim); max-width:46ch; margin-bottom:24px;}
+  .cta-row{display:flex; gap:12px; flex-wrap:wrap;}
+  .btn-primary{background:var(--berry); color:var(--cream); text-decoration:none; padding:14px 24px; border-radius:var(--radius); font-weight:600; display:inline-block; border:1px solid var(--berry); cursor:pointer; font-size:0.95rem;}
+  .btn-primary:hover{background:var(--berry-deep);}
+  .btn-secondary{background:transparent; color:var(--cream); text-decoration:none; padding:14px 24px; border-radius:var(--radius); font-weight:600; border:1px solid rgba(247,236,221,0.3); display:inline-block; cursor:pointer; font-size:0.95rem;}
+  .btn-secondary:hover{border-color:var(--gold); color:var(--gold);}
+  .trust-row{margin-top:22px; display:flex; gap:20px; flex-wrap:wrap; font-size:0.82rem; color:var(--cream-dim);}
+  .trust-row strong{color:var(--gold); font-family:'Fraunces',serif; font-size:0.98rem; display:block;}
+  .hero-visual{display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:10px; aspect-ratio:1/1;}
+  .tile{border-radius:var(--radius); display:flex; align-items:flex-end; padding:14px; font-family:'Fraunces', serif; font-size:0.9rem; font-weight:600; color:var(--cream); position:relative; overflow:hidden;}
+  .tile span{position:relative; z-index:2;}
+  .tile::after{content:""; position:absolute; inset:0; background:rgba(0,0,0,0.18);}
+  .t1{background:linear-gradient(135deg,#E15B72,#C23B54); grid-row:1/3;}
+  .t2{background:linear-gradient(135deg,#CB9B4A,#A97A2E);}
+  .t3{background:linear-gradient(135deg,#8A9A5B,#5F6E3B);}
+
+  section{padding:64px 0;}
+  .section-head{max-width:60ch; margin-bottom:36px;}
+  .section-head h2{font-size:clamp(1.6rem,3.2vw,2.2rem); margin-top:8px;}
+  .section-head p{color:var(--cream-dim); margin-top:10px; font-size:0.98rem;}
+  .bg-alt{background:var(--bg-alt);}
+  .bg-panel{background:var(--panel);}
+
+  .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:start;}
+  @media (max-width:760px){.about-grid{grid-template-columns:1fr;}}
+  .about-grid p{color:var(--cream-dim); margin-bottom:12px;}
+  .tag-list{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px;}
+  .tag{border:1px solid rgba(247,236,221,0.25); border-radius:999px; padding:6px 13px; font-size:0.8rem; color:var(--cream-dim);}
+  .tag.veg{border-color:var(--sage); color:var(--sage);}
+
+  .menu-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:20px;}
+  .menu-card{background:var(--bg-alt); border:1px solid rgba(247,236,221,0.08); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column;}
+  .menu-card .swatch{height:130px; display:flex; align-items:center; justify-content:center; font-family:'Fraunces', serif; font-style:italic; color:rgba(247,236,221,0.75); font-size:0.82rem;}
+  .s-graze{background:linear-gradient(135deg,#5F6E3B,#3D471F);}
+  .s-cupcake{background:linear-gradient(135deg,#E15B72,#9A2E43);}
+  .s-strawberry{background:linear-gradient(135deg,#C23B54,#7A1F30);}
+  .s-numbercake{background:linear-gradient(135deg,#CB9B4A,#8A6423);}
+  .s-donut{background:linear-gradient(135deg,#A97A2E,#5F4116);}
+  .s-bundt{background:linear-gradient(135deg,#8A9A5B,#4C5731);}
+  .menu-body{padding:16px 16px 18px; display:flex; flex-direction:column; gap:6px; flex:1;}
+  .menu-body h3{font-size:1.02rem;}
+  .menu-body p{color:var(--cream-dim); font-size:0.85rem; flex:1;}
+  .price-row{display:flex; align-items:center; justify-content:space-between; margin-top:6px;}
+  .price{font-family:'Fraunces',serif; color:var(--gold); font-weight:600;}
+  .order-link{font-size:0.8rem; text-decoration:none; color:var(--berry); font-weight:600; background:none; border:none; cursor:pointer; font-family:inherit;}
+  .order-link:hover{color:var(--cream);}
+  .size-pills{display:flex; gap:6px; flex-wrap:wrap; margin-top:2px;}
+  .pill{font-size:0.72rem; border:1px solid rgba(247,236,221,0.25); border-radius:999px; padding:3px 9px; color:var(--cream-dim);}
+
+  .order-shell{display:grid; grid-template-columns:0.9fr 1.1fr; gap:44px; align-items:start;}
+  @media (max-width:820px){.order-shell{grid-template-columns:1fr;}}
+  .policy-card{background:var(--bg); border:1px solid rgba(247,236,221,0.1); border-radius:var(--radius); padding:20px;}
+  .policy-card h3{font-size:1rem; margin-bottom:8px; color:var(--gold);}
+  .policy-card ul{list-style:none; margin-top:8px;}
+  .policy-card li{padding:7px 0; border-top:1px solid rgba(247,236,221,0.08); font-size:0.87rem; color:var(--cream-dim);}
+  .policy-card li:first-child{border-top:none;}
+  .policy-card li strong{color:var(--cream); display:block; font-size:0.84rem; margin-bottom:2px;}
+
+  form{display:flex; flex-direction:column; gap:14px;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:540px){.field-row{grid-template-columns:1fr;}}
+  label{font-size:0.8rem; color:var(--cream-dim); display:block; margin-bottom:5px;}
+  input, select, textarea{width:100%; background:var(--bg-alt); border:1px solid rgba(247,236,221,0.18); color:var(--cream); padding:11px 12px; border-radius:var(--radius); font-family:inherit; font-size:0.92rem;}
+  input:focus, select:focus, textarea:focus{outline:2px solid var(--gold); outline-offset:1px; border-color:var(--gold);}
+  textarea{resize:vertical; min-height:80px;}
+  fieldset{border:1px solid rgba(247,236,221,0.14); border-radius:var(--radius); padding:14px;}
+  legend{font-size:0.8rem; color:var(--cream-dim); padding:0 6px;}
+  .radio-row{display:flex; gap:18px; flex-wrap:wrap;}
+  .radio-opt{display:flex; align-items:center; gap:7px; font-size:0.9rem; cursor:pointer;}
+  .radio-opt input{width:auto;}
+  .delivery-fields{display:none; flex-direction:column; gap:14px; margin-top:14px; padding-top:14px; border-top:1px dashed rgba(247,236,221,0.15);}
+  .delivery-fields.show{display:flex;}
+  .subtotal-line{display:flex; justify-content:space-between; align-items:center; padding:10px 0; font-size:0.95rem;}
+  .subtotal-line strong{color:var(--gold); font-family:'Fraunces',serif; font-size:1.1rem;}
+  .submit-btn{background:var(--berry); color:var(--cream); border:none; padding:14px 20px; border-radius:var(--radius); font-weight:600; font-size:0.94rem; cursor:pointer; align-self:flex-start;}
+  .submit-btn:hover{background:var(--berry-deep);}
+  .form-note{font-size:0.76rem; color:var(--cream-dim);}
+  .confirm-panel{display:none; background:rgba(138,154,91,0.14); border:1px solid var(--sage); padding:18px; border-radius:var(--radius); font-size:0.9rem;}
+  .confirm-panel.show{display:block;}
+  .confirm-panel .track-id{font-family:'Fraunces',serif; color:var(--gold); font-size:1.15rem; font-weight:700; letter-spacing:0.02em;}
+
+  .deposit-box{background:var(--bg); border:1px solid rgba(247,236,221,0.12); border-radius:var(--radius); padding:18px; margin-top:16px;}
+  .deposit-box h3{font-size:0.98rem; color:var(--gold); margin-bottom:8px;}
+  .deposit-box p{color:var(--cream-dim); font-size:0.86rem; margin-bottom:12px;}
+  .pay-options{display:flex; gap:10px; flex-wrap:wrap;}
+  .pay-option{flex:1; min-width:140px; background:var(--bg-alt); border:1px solid rgba(247,236,221,0.14); border-radius:var(--radius); padding:12px; text-align:center; text-decoration:none; color:var(--cream);}
+  .pay-option:hover{border-color:var(--gold);}
+  .pay-option .pm-name{font-weight:600; font-size:0.88rem; display:block; margin-bottom:2px;}
+  .pay-option .pm-sub{font-size:0.72rem; color:var(--cream-dim);}
+  .pay-badges{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:8px;}
+  .pay-badge{font-size:0.66rem; font-weight:700; border:1px solid rgba(247,236,221,0.25); border-radius:4px; padding:3px 7px; color:var(--cream-dim);}
+  .pay-badge.stripe{color:#8FA8FF; border-color:rgba(143,168,255,0.4);}
+  .pay-badge.afterpay{color:#B2FCE4; border-color:rgba(178,252,228,0.4);}
+  .pay-badge.zip{color:#FFD27A; border-color:rgba(255,210,122,0.4);}
+
+  /* Track order */
+  .track-box{max-width:520px; margin:0 auto;}
+  .track-row{display:flex; gap:10px;}
+  .track-row input{flex:1;}
+  .track-result{margin-top:22px; background:var(--bg-alt); border:1px solid rgba(247,236,221,0.1); border-radius:var(--radius); padding:20px; display:none;}
+  .track-result.show{display:block;}
+  .status-track{display:flex; justify-content:space-between; margin-top:16px; position:relative;}
+  .status-track::before{content:""; position:absolute; top:9px; left:0; right:0; height:2px; background:rgba(247,236,221,0.15);}
+  .status-step{flex:1; text-align:center; position:relative; font-size:0.72rem; color:var(--cream-dim);}
+  .status-step .dot{width:18px; height:18px; border-radius:50%; background:var(--bg); border:2px solid rgba(247,236,221,0.3); margin:0 auto 8px; position:relative; z-index:2;}
+  .status-step.done .dot{background:var(--sage); border-color:var(--sage);}
+  .status-step.done{color:var(--cream);}
+  .track-empty{color:var(--cream-dim); font-size:0.88rem; margin-top:14px;}
+
+  .review-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px;}
+  .review-card{background:var(--panel); border-radius:var(--radius); padding:20px; border-top:2px solid var(--gold);}
+  .stars{color:var(--gold); letter-spacing:2px; margin-bottom:10px; font-size:0.92rem;}
+  .review-card p{color:var(--cream-dim); font-size:0.9rem; margin-bottom:12px;}
+  .review-name{font-size:0.83rem; font-weight:600;}
+
+  .insta-band{background:linear-gradient(120deg, var(--berry-deep), var(--gold)); padding:40px 0;}
+  .insta-inner{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;}
+  .insta-inner h2{font-size:1.5rem; color:var(--bg);}
+  .insta-inner p{color:rgba(43,27,20,0.85); font-size:0.92rem; max-width:44ch;}
+  .btn-dark{background:var(--bg); color:var(--cream); text-decoration:none; padding:13px 22px; border-radius:var(--radius); font-weight:600; white-space:nowrap;}
+
+  .faq-item{border-top:1px solid rgba(247,236,221,0.1); padding:16px 0;}
+  .faq-item:last-child{border-bottom:1px solid rgba(247,236,221,0.1);}
+  .faq-q{display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-family:'Fraunces',serif; font-size:1rem; gap:16px;}
+  .faq-q .icon{color:var(--gold); font-size:1.15rem; transition:transform 0.2s;}
+  .faq-item.open .icon{transform:rotate(45deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height 0.25s ease; color:var(--cream-dim); font-size:0.9rem;}
+  .faq-item.open .faq-a{max-height:200px; padding-top:10px;}
+
+  /* Admin */
+  #admin{background:var(--bg-alt);}
+  .admin-lock{max-width:380px; margin:0 auto; text-align:center;}
+  .admin-lock input{margin:14px 0;}
+  .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-bottom:32px;}
+  .stat-card{background:var(--panel); border-radius:var(--radius); padding:18px; border-top:2px solid var(--gold);}
+  .stat-card .num{font-family:'Fraunces',serif; font-size:1.7rem; color:var(--gold); font-weight:700;}
+  .stat-card .lbl{font-size:0.76rem; color:var(--cream-dim); text-transform:uppercase; letter-spacing:0.06em; margin-top:4px;}
+  .admin-tabs{display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap;}
+  .admin-tab{background:transparent; border:1px solid rgba(247,236,221,0.2); color:var(--cream-dim); padding:9px 16px; border-radius:999px; font-size:0.85rem; cursor:pointer;}
+  .admin-tab.active{background:var(--berry); border-color:var(--berry); color:var(--cream);}
+  .admin-panel{display:none;}
+  .admin-panel.active{display:block;}
+  .chart-card{background:var(--panel); border-radius:var(--radius); padding:22px; margin-bottom:28px;}
+  .chart-card h3{font-size:1rem; margin-bottom:16px; color:var(--gold);}
+  table{width:100%; border-collapse:collapse; font-size:0.85rem;}
+  th, td{text-align:left; padding:10px 8px; border-bottom:1px solid rgba(247,236,221,0.08);}
+  th{color:var(--gold); font-weight:600; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;}
+  td select, td input{padding:6px 8px; font-size:0.8rem;}
+  .table-wrap{overflow-x:auto; background:var(--panel); border-radius:var(--radius); padding:6px 16px;}
+  .status-pill{font-size:0.72rem; padding:3px 9px; border-radius:999px; border:1px solid var(--gold); color:var(--gold); white-space:nowrap;}
+  .status-pill.delivered{border-color:var(--sage); color:var(--sage);}
+  .expense-form{display:grid; grid-template-columns:2fr 1fr 1fr auto; gap:10px; align-items:end; margin-bottom:20px;}
+  @media (max-width:700px){.expense-form{grid-template-columns:1fr 1fr;}}
+  .empty-note{color:var(--cream-dim); font-size:0.88rem; padding:16px 0;}
+
+  footer{background:var(--bg-alt); padding:44px 0 28px;}
+  .footer-grid{display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:32px;}
+  @media (max-width:700px){.footer-grid{grid-template-columns:1fr;}}
+  footer h4{font-size:0.83rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--gold); margin-bottom:12px;}
+  footer p, footer li{color:var(--cream-dim); font-size:0.88rem;}
+  footer ul{list-style:none;}
+  footer li{margin-bottom:7px;}
+  footer a{text-decoration:none;}
+  footer a:hover{color:var(--gold);}
+  .foot-bottom{margin-top:34px; padding-top:20px; border-top:1px solid rgba(247,236,221,0.08); font-size:0.76rem; color:var(--cream-dim); text-align:center;}
+  .sticky-cta{position:fixed; bottom:16px; left:50%; transform:translateX(-50%); background:var(--berry); color:var(--cream); text-decoration:none; padding:12px 24px; border-radius:999px; font-weight:600; font-size:0.88rem; box-shadow:0 8px 24px rgba(0,0,0,0.35); z-index:60; display:none;}
+  @media (max-width:600px){ .sticky-cta{display:block;} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">KKreations <span>World</span></div>
+    <nav class="nav-links">
+      <a href="#menu">Menu</a>
+      <a href="#order">Order</a>
+      <a href="#track">Track Order</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+      <a href="#admin">Admin</a>
+    </nav>
+    <a class="nav-cta" href="#order">Order now</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Delivering across Sydney · Made to order</p>
+      <h1>Grazing spreads, cupcake bouquets &amp; <em>show-stopper</em> cakes</h1>
+      <p class="lead">Handmade in small batches for birthdays, engagements and get-togethers across Sydney. Strawberry towers, number &amp; letter cakes, donuts and grazing boxes — built around your date, your headcount, your taste.</p>
+      <div class="cta-row">
+        <a class="btn-primary" href="#order">Start an order</a>
+        <a class="btn-secondary" href="#track">Track my order</a>
+      </div>
+      <div class="trust-row">
+        <div><strong>1,975+</strong>Instagram community</div>
+        <div><strong>Veg</strong>options on every menu</div>
+        <div><strong>Delivery</strong>across Sydney</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="tile t1"><span>Strawberry<br>Towers</span></div>
+      <div class="tile t2"><span>Cupcake<br>Bouquets</span></div>
+      <div class="tile t3"><span>Grazing<br>Boxes</span></div>
+    </div>
+  </div>
+</section>
+<div class="scallop to-panel"></div>
+
+<section class="bg-panel">
+  <div class="wrap about-grid">
+    <div>
+      <p class="eyebrow">Our story</p>
+      <h2>Baked with a little home-kitchen stubbornness</h2>
+      <p>KKreations World started the way most good things do — friends asking for "just one more" grazing box for their next party. What began on Instagram is now a full spread of custom cakes, cupcake bouquets, strawberry towers and grazing boxes, each one built by hand for the date on your calendar.</p>
+      <p>Every order is made fresh in small batches, so what you see is genuinely what you get — no factory shortcuts, no filler ingredients.</p>
+      <div class="tag-list">
+        <span class="tag">Number &amp; letter cakes</span>
+        <span class="tag">Bundt cakes</span>
+        <span class="tag">Donuts</span>
+        <span class="tag veg">Veg options</span>
+        <span class="tag">Delivery &amp; pickup</span>
+      </div>
+    </div>
+    <div class="policy-card">
+      <h3>Good to know before you order</h3>
+      <ul>
+        <li><strong>Lead time</strong>Simple orders: 1–2 weeks. Tiered or elaborate designs: 4+ weeks.</li>
+        <li><strong>Booking</strong>A deposit confirms your date — full balance due on pickup or delivery.</li>
+        <li><strong>Delivery</strong>Available Sydney-wide; pickup by appointment.</li>
+        <li><strong>Dietary</strong>Veg options available on request — let us know when you enquire.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="scallop flip to-bg" style="background-color:var(--panel);"></div>
+
+<section id="menu">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">The menu</p>
+      <h2>Something for every table</h2>
+      <p>A starting point — every piece can be resized, re-flavoured and re-themed for your event.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <div class="swatch s-graze">grazing box</div>
+        <div class="menu-body">
+          <h3>Grazing Platters &amp; Boxes</h3>
+          <p>Sweet or savoury spreads built for sharing — perfect for parties, office catering or a night in.</p>
+          <div class="size-pills"><span class="pill">Small</span><span class="pill">Medium</span><span class="pill">Large</span><span class="pill">XL</span></div>
+          <div class="price-row"><span class="price">From $55</span><button class="order-link" onclick="prefillOrder('graze')">Order this →</button></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="swatch s-cupcake">cupcake bouquet</div>
+        <div class="menu-body">
+          <h3>Cupcake Bouquets</h3>
+          <p>A bunch of hand-decorated cupcakes arranged like fresh flowers — a gift that's actually eaten.</p>
+          <div class="size-pills"><span class="pill">6 pc</span><span class="pill">12 pc</span><span class="pill">18 pc</span></div>
+          <div class="price-row"><span class="price">From $65</span><button class="order-link" onclick="prefillOrder('cupcake')">Order this →</button></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="swatch s-strawberry">strawberry tower</div>
+        <div class="menu-body">
+          <h3>Strawberry Towers</h3>
+          <p>Chocolate-dipped strawberries stacked tall — a showpiece for engagements and milestone birthdays.</p>
+          <div class="size-pills"><span class="pill">Small</span><span class="pill">Grand</span></div>
+          <div class="price-row"><span class="price">From $90</span><button class="order-link" onclick="prefillOrder('strawberry')">Order this →</button></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="swatch s-numbercake">number / letter cake</div>
+        <div class="menu-body">
+          <h3>Number &amp; Letter Cakes</h3>
+          <p>Sculpted cake in the shape of an age or initial, dressed with fruit, macarons or fresh flowers.</p>
+          <div class="size-pills"><span class="pill">Serves 10–15</span><span class="pill">Serves 20+</span></div>
+          <div class="price-row"><span class="price">From $110</span><button class="order-link" onclick="prefillOrder('numbercake')">Get a quote →</button></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="swatch s-donut">donuts</div>
+        <div class="menu-body">
+          <h3>Donuts</h3>
+          <p>Fresh, hand-glazed donuts by the box — a lighter add-on for dessert tables and grazing spreads.</p>
+          <div class="size-pills"><span class="pill">6 pc</span><span class="pill">12 pc</span></div>
+          <div class="price-row"><span class="price">From $30</span><button class="order-link" onclick="prefillOrder('donut')">Order this →</button></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="swatch s-bundt">bundt cake</div>
+        <div class="menu-body">
+          <h3>Bundt Cakes</h3>
+          <p>Classic ringed cakes in seasonal flavours, glazed simply so the cake does the talking.</p>
+          <div class="size-pills"><span class="pill">Mini</span><span class="pill">Full size</span></div>
+          <div class="price-row"><span class="price">From $40</span><button class="order-link" onclick="prefillOrder('bundt')">Order this →</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="scallop to-panel"></div>
+<section class="bg-panel" id="order">
+  <div class="wrap order-shell">
+    <div>
+      <p class="eyebrow">Place an order</p>
+      <h2>Tell us what you're celebrating</h2>
+      <p style="color:var(--cream-dim); margin-top:12px;">Submit your order and we'll confirm pricing, lead time and your delivery or pickup details. You'll get a tracking code to follow its progress.</p>
+      <div class="policy-card" style="margin-top:22px;">
+        <h3>What happens next</h3>
+        <ul>
+          <li><strong>1. You submit</strong>Send through your date, size and design notes.</li>
+          <li><strong>2. We confirm</strong>You'll get a price and lead-time confirmation within 1–2 days.</li>
+          <li><strong>3. You pay a deposit</strong>This locks in your date on our calendar.</li>
+          <li><strong>4. You track it</strong>Use your order code any time on the Track Order page.</li>
+        </ul>
+      </div>
+
+      <div class="deposit-box">
+        <h3>Pay your deposit</h3>
+        <p>Once your order is confirmed, we'll send a secure payment link by email or Instagram DM. Choose to pay in full, or split it with Afterpay or Zip.</p>
+        <div class="pay-options">
+          <a class="pay-option" href="https://buy.stripe.com/REPLACE_deposit-link" target="_blank" rel="noopener"><span class="pm-name">Card / Stripe</span><span class="pm-sub">Pay deposit or in full</span></a>
+          <a class="pay-option" href="https://buy.stripe.com/REPLACE_deposit-link" target="_blank" rel="noopener"><span class="pm-name">Afterpay</span><span class="pm-sub">4 interest-free instalments</span></a>
+          <a class="pay-option" href="https://buy.stripe.com/REPLACE_deposit-link" target="_blank" rel="noopener"><span class="pm-name">Zip</span><span class="pm-sub">Pay over time</span></a>
+        </div>
+        <p class="form-note" style="margin-top:10px;">Placeholder links — see the build notes for what needs connecting.</p>
+      </div>
+    </div>
+
+    <form id="orderForm">
+      <div class="field-row">
+        <div>
+          <label for="name">Your name</label>
+          <input id="name" type="text" placeholder="Full name" required>
+        </div>
+        <div>
+          <label for="phone">Phone or Instagram handle</label>
+          <input id="phone" type="text" placeholder="04xx xxx xxx or @handle" required>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div>
+          <label for="occasion">Occasion</label>
+          <select id="occasion">
+            <option>Birthday</option><option>Engagement</option><option>Baby shower</option>
+            <option>Corporate / office</option><option>Other celebration</option>
+          </select>
+        </div>
+        <div>
+          <label for="date">Date needed</label>
+          <input id="date" type="date">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div>
+          <label for="item">What are you after?</label>
+          <select id="item" onchange="updateSubtotal()">
+            <option value="graze" data-price="55">Grazing platter / box — from $55</option>
+            <option value="cupcake" data-price="65">Cupcake bouquet — from $65</option>
+            <option value="strawberry" data-price="90">Strawberry tower — from $90</option>
+            <option value="numbercake" data-price="0">Number / letter cake — custom quote</option>
+            <option value="donut" data-price="30">Donuts — from $30</option>
+            <option value="bundt" data-price="40">Bundt cake — from $40</option>
+          </select>
+        </div>
+        <div>
+          <label for="qty">Quantity</label>
+          <input id="qty" type="number" min="1" value="1" onchange="updateSubtotal()">
+        </div>
+      </div>
+
+      <div class="subtotal-line">
+        <span>Estimated subtotal</span>
+        <strong id="subtotalDisplay">$55</strong>
+      </div>
+      <p class="form-note" id="customNote" style="display:none;">Custom pieces are priced after we review your design notes — we'll confirm the final total with you.</p>
+
+      <div>
+        <label for="notes">Design notes, colours, flavours or dietary needs</label>
+        <textarea id="notes" placeholder="Tell us the vibe — colours, theme, flavours, any veg or allergy needs"></textarea>
+      </div>
+
+      <fieldset>
+        <legend>Delivery or pickup?</legend>
+        <div class="radio-row">
+          <label class="radio-opt"><input type="radio" name="fulfil" value="pickup" checked onchange="toggleDelivery()"> Pickup</label>
+          <label class="radio-opt"><input type="radio" name="fulfil" value="delivery" onchange="toggleDelivery()"> Delivery</label>
+        </div>
+        <div class="delivery-fields" id="deliveryFields">
+          <div class="field-row">
+            <div>
+              <label for="addr1">Street address</label>
+              <input id="addr1" type="text" placeholder="Unit / street number and name">
+            </div>
+            <div>
+              <label for="suburb">Suburb</label>
+              <input id="suburb" type="text" placeholder="e.g. Parramatta">
+            </div>
+          </div>
+          <div class="field-row">
+            <div>
+              <label for="postcode">Postcode</label>
+              <input id="postcode" type="text" placeholder="e.g. 2150">
+            </div>
+            <div>
+              <label for="state">State</label>
+              <input id="state" type="text" value="NSW">
+            </div>
+          </div>
+          <div class="field-row">
+            <div>
+              <label for="deliveryTime">Preferred delivery time</label>
+              <input id="deliveryTime" type="time">
+            </div>
+            <div>
+              <label for="deliveryInstructions">Delivery instructions (optional)</label>
+              <input id="deliveryInstructions" type="text" placeholder="Gate code, leave at door, etc.">
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <div>
+        <label>Inspiration photo (optional)</label>
+        <div class="upload-box" id="uploadBox" style="border:1.5px dashed rgba(247,236,221,0.25); border-radius:2px; padding:16px; text-align:center; font-size:0.85rem; color:var(--cream-dim); cursor:pointer;">Tap to attach a reference photo</div>
+      </div>
+
+      <button type="submit" class="submit-btn">Send my order</button>
+      <p class="form-note">Submitting creates a trackable order — you'll get a code to check progress any time.</p>
+
+      <div class="confirm-panel" id="confirmPanel">
+        Thanks — your order is in. Your tracking code is <span class="track-id" id="confirmCode"></span>. Save it to check status on the Track Order section below.
+      </div>
+    </form>
+  </div>
+</section>
+<div class="scallop flip to-bg" style="background-color:var(--panel);"></div>
+
+<section id="track">
+  <div class="wrap track-box">
+    <div class="section-head" style="text-align:center; margin-left:auto; margin-right:auto;">
+      <p class="eyebrow">Track your order</p>
+      <h2>Where's my order at?</h2>
+      <p>Enter the tracking code from your confirmation to see the latest status.</p>
+    </div>
+    <div class="track-row">
+      <input id="trackInput" type="text" placeholder="e.g. KK-4F7A2B">
+      <button class="btn-primary" onclick="trackOrder()">Track</button>
+    </div>
+    <div class="track-result" id="trackResult"></div>
+  </div>
+</section>
+
+<section id="reviews" class="bg-panel">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">From our customers</p>
+      <h2>What people are saying</h2>
+    </div>
+    <div class="review-grid">
+      <div class="review-card"><div class="stars">★★★★★</div><p>"[Space reserved for a real customer review — pull top comments from Instagram or Google once collected.]"</p><div class="review-name">— Customer name, suburb</div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>"[Space reserved for a real customer review — pull top comments from Instagram or Google once collected.]"</p><div class="review-name">— Customer name, suburb</div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>"[Space reserved for a real customer review — pull top comments from Instagram or Google once collected.]"</p><div class="review-name">— Customer name, suburb</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="insta-band">
+  <div class="wrap insta-inner">
+    <div><h2>@kkreationsworld</h2><p>The full spread lives on Instagram — daily orders, behind-the-scenes and the next drop of designs.</p></div>
+    <a class="btn-dark" href="https://instagram.com/kkreationsworld" target="_blank" rel="noopener">Follow along</a>
+  </div>
+</div>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head"><p class="eyebrow">Questions</p><h2>Before you enquire</h2></div>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q"><span>How far in advance should I order?</span><span class="icon">+</span></div><div class="faq-a">Simple items like cupcake bouquets or grazing boxes need about 1–2 weeks' notice. Tiered or heavily detailed number cakes and towers need 4 or more weeks, especially around peak periods.</div></div>
+      <div class="faq-item"><div class="faq-q"><span>Do I need to pay a deposit?</span><span class="icon">+</span></div><div class="faq-a">Yes — a deposit confirms your date on the calendar. The remaining balance is due on pickup or delivery.</div></div>
+      <div class="faq-item"><div class="faq-q"><span>Do you deliver?</span><span class="icon">+</span></div><div class="faq-a">Yes, delivery is available across Sydney for a fee based on distance. Pickup is also available by appointment.</div></div>
+      <div class="faq-item"><div class="faq-q"><span>Do you cater for dietary needs?</span><span class="icon">+</span></div><div class="faq-a">Veg options are available across the menu — let us know your requirements when you submit your order.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="admin" class="bg-panel">
+  <div class="wrap">
+    <div class="section-head"><p class="eyebrow">Business dashboard</p><h2>Admin</h2></div>
+
+    <div class="admin-lock" id="adminLock">
+      <p style="color:var(--cream-dim); margin-bottom:10px;">Enter the admin password to view orders and accounting.</p>
+      <input id="adminPassword" type="password" placeholder="Admin password" onkeydown="if(event.key==='Enter') checkAdminLogin()">
+      <button class="btn-primary" onclick="checkAdminLogin()">Enter dashboard</button>
+      <p class="form-note" style="margin-top:12px;">Default password: <code>kkreations2026</code> — change this in the code before going live (see build notes).</p>
+    </div>
+
+    <div id="adminDashboard" style="display:none;">
+      <div class="stat-grid">
+        <div class="stat-card"><div class="num" id="statActive">0</div><div class="lbl">Active orders</div></div>
+        <div class="stat-card"><div class="num" id="statInProgress">0</div><div class="lbl">In progress</div></div>
+        <div class="stat-card"><div class="num" id="statDelivered">0</div><div class="lbl">Delivered</div></div>
+        <div class="stat-card"><div class="num" id="statRevenue">$0</div><div class="lbl">Total revenue</div></div>
+        <div class="stat-card"><div class="num" id="statExpenses">$0</div><div class="lbl">Total expenses</div></div>
+        <div class="stat-card"><div class="num" id="statProfit">$0</div><div class="lbl">Total profit</div></div>
+      </div>
+
+      <div class="chart-card">
+        <h3>Monthly sales</h3>
+        <canvas id="salesChart" height="90"></canvas>
+      </div>
+
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchAdminTab('active')">Active orders</button>
+        <button class="admin-tab" onclick="switchAdminTab('past')">Past orders</button>
+        <button class="admin-tab" onclick="switchAdminTab('expenses')">Expenses</button>
+      </div>
+
+      <div class="admin-panel active" id="panel-active">
+        <div class="table-wrap"><table id="tableActive"><thead><tr><th>Code</th><th>Customer</th><th>Item</th><th>Fulfilment</th><th>Value ($)</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="admin-panel" id="panel-past">
+        <div class="table-wrap"><table id="tablePast"><thead><tr><th>Code</th><th>Customer</th><th>Item</th><th>Fulfilment</th><th>Value ($)</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="admin-panel" id="panel-expenses">
+        <div class="expense-form">
+          <div><label for="expDesc">Description</label><input id="expDesc" type="text" placeholder="e.g. Ingredients"></div>
+          <div><label for="expAmount">Amount ($)</label><input id="expAmount" type="number" min="0" step="0.01"></div>
+          <div><label for="expDate">Date</label><input id="expDate" type="date"></div>
+          <button class="btn-primary" onclick="addExpense()">Add expense</button>
+        </div>
+        <div class="table-wrap"><table id="tableExpenses"><thead><tr><th>Date</th><th>Description</th><th>Amount ($)</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <div class="logo">KKreations <span>World</span></div>
+      <p style="margin-top:12px;">Handmade grazing, cakes and sweet treats, made to order and delivered across Sydney.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <ul><li><a href="#menu">Menu</a></li><li><a href="#order">Order</a></li><li><a href="#track">Track order</a></li><li><a href="#faq">FAQ</a></li></ul>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <ul><li><a href="https://instagram.com/kkreationsworld" target="_blank" rel="noopener">Instagram · @kkreationsworld</a></li><li>Delivery across Sydney</li></ul>
+    </div>
+  </div>
+  <div class="foot-bottom wrap">Design concept for KKreations World — built for review, not yet the live site.</div>
+</footer>
+
+<a class="sticky-cta" href="#order">Start an order</a>
+
+<script>
+  /* ---------- Storage helpers (shared across everyone using this artifact) ---------- */
+  const ORDERS_KEY = 'kk_orders_v1';
+  const EXPENSES_KEY = 'kk_expenses_v1';
+
+  async function loadOrders(){
+    try{
+      const res = await window.storage.get(ORDERS_KEY, true);
+      return res ? JSON.parse(res.value) : [];
+    }catch(e){ return []; }
+  }
+  async function saveOrders(orders){
+    try{ await window.storage.set(ORDERS_KEY, JSON.stringify(orders), true); }catch(e){ console.error('Could not save orders', e); }
+  }
+  async function loadExpenses(){
+    try{
+      const res = await window.storage.get(EXPENSES_KEY, true);
+      return res ? JSON.parse(res.value) : [];
+    }catch(e){ return []; }
+  }
+  async function saveExpenses(expenses){
+    try{ await window.storage.set(EXPENSES_KEY, JSON.stringify(expenses), true); }catch(e){ console.error('Could not save expenses', e); }
+  }
+
+  const ITEM_LABELS = {graze:'Grazing platter / box', cupcake:'Cupcake bouquet', strawberry:'Strawberry tower', numbercake:'Number / letter cake', donut:'Donuts', bundt:'Bundt cake'};
+  const STATUS_STEPS = ['Order placed','Confirmed','In progress','Ready / out for delivery','Delivered'];
+
+  /* ---------- FAQ accordion ---------- */
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    item.querySelector('.faq-q').addEventListener('click',()=> item.classList.toggle('open'));
+  });
+
+  /* ---------- Order form logic ---------- */
+  function updateSubtotal(){
+    const itemSel = document.getElementById('item');
+    const price = parseFloat(itemSel.selectedOptions[0].dataset.price || 0);
+    const qty = parseInt(document.getElementById('qty').value || 1);
+    const subtotal = price * qty;
+    document.getElementById('subtotalDisplay').textContent = price === 0 ? 'Quote required' : ('$' + subtotal.toFixed(0));
+    document.getElementById('customNote').style.display = price === 0 ? 'block' : 'none';
+  }
+  function toggleDelivery(){
+    const isDelivery = document.querySelector('input[name="fulfil"]:checked').value === 'delivery';
+    document.getElementById('deliveryFields').classList.toggle('show', isDelivery);
+  }
+  function prefillOrder(itemKey){
+    document.getElementById('item').value = itemKey;
+    updateSubtotal();
+    document.getElementById('order').scrollIntoView({behavior:'smooth'});
+  }
+  updateSubtotal();
+
+  function genOrderCode(){
+    return 'KK-' + Math.random().toString(36).slice(2, 8).toUpperCase();
+  }
+
+  document.getElementById('orderForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const itemSel = document.getElementById('item');
+    const price = parseFloat(itemSel.selectedOptions[0].dataset.price || 0);
+    const qty = parseInt(document.getElementById('qty').value || 1);
+    const isDelivery = document.querySelector('input[name="fulfil"]:checked').value === 'delivery';
+
+    const order = {
+      code: genOrderCode(),
+      createdAt: new Date().toISOString(),
+      name: document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      occasion: document.getElementById('occasion').value,
+      item: itemSel.value,
+      qty: qty,
+      value: price * qty, // 0 for custom quotes until admin sets it
+      notes: document.getElementById('notes').value,
+      fulfilment: isDelivery ? 'Delivery' : 'Pickup',
+      address: isDelivery ? {
+        line1: document.getElementById('addr1').value,
+        suburb: document.getElementById('suburb').value,
+        postcode: document.getElementById('postcode').value,
+        state: document.getElementById('state').value,
+        time: document.getElementById('deliveryTime').value,
+        instructions: document.getElementById('deliveryInstructions').value
+      } : null,
+      status: STATUS_STEPS[0]
+    };
+
+    const orders = await loadOrders();
+    orders.push(order);
+    await saveOrders(orders);
+
+    document.getElementById('confirmCode').textContent = order.code;
+    document.getElementById('confirmPanel').classList.add('show');
+    e.target.reset();
+    document.getElementById('deliveryFields').classList.remove('show');
+    updateSubtotal();
+  });
+
+  /* ---------- Track order ---------- */
+  async function trackOrder(){
+    const code = document.getElementById('trackInput').value.trim().toUpperCase();
+    const resultBox = document.getElementById('trackResult');
+    if(!code){ return; }
+    const orders = await loadOrders();
+    const order = orders.find(o => o.code.toUpperCase() === code);
+    if(!order){
+      resultBox.innerHTML = '<p class="track-empty">No order found for that code. Double-check it and try again.</p>';
+      resultBox.classList.add('show');
+      return;
+    }
+    const currentIdx = STATUS_STEPS.indexOf(order.status);
+    let stepsHtml = '<div class="status-track">';
+    STATUS_STEPS.forEach((step, i)=>{
+      stepsHtml += `<div class="status-step ${i<=currentIdx?'done':''}"><div class="dot"></div>${step}</div>`;
+    });
+    stepsHtml += '</div>';
+    resultBox.innerHTML = `
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+        <div><strong>${order.code}</strong> — ${ITEM_LABELS[order.item] || order.item} × ${order.qty}</div>
+        <div class="status-pill ${order.status==='Delivered'?'delivered':''}">${order.status}</div>
+      </div>
+      <p style="color:var(--cream-dim); font-size:0.85rem; margin-top:8px;">${order.fulfilment}${order.address ? ' to ' + order.address.suburb : ''}</p>
+      ${stepsHtml}
+    `;
+    resultBox.classList.add('show');
+  }
+
+  /* ---------- Admin ---------- */
+  const ADMIN_PASSWORD = 'kkreations2026'; // CHANGE THIS before going live — see build notes
+  function checkAdminLogin(){
+    const val = document.getElementById('adminPassword').value;
+    if(val === ADMIN_PASSWORD){
+      document.getElementById('adminLock').style.display = 'none';
+      document.getElementById('adminDashboard').style.display = 'block';
+      renderAdmin();
+    }else{
+      alert('Incorrect password.');
+    }
+  }
+
+  function switchAdminTab(tab){
+    document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('panel-' + tab).classList.add('active');
+  }
+
+  let salesChartInstance = null;
+
+  async function renderAdmin(){
+    const orders = await loadOrders();
+    const expenses = await loadExpenses();
+
+    const active = orders.filter(o => o.status !== 'Delivered');
+    const past = orders.filter(o => o.status === 'Delivered');
+    const inProgress = orders.filter(o => o.status === 'In progress').length;
+    const revenue = orders.reduce((sum,o)=> sum + (o.value||0), 0);
+    const totalExpenses = expenses.reduce((sum,e)=> sum + (parseFloat(e.amount)||0), 0);
+    const profit = revenue - totalExpenses;
+
+    document.getElementById('statActive').textContent = active.length;
+    document.getElementById('statInProgress').textContent = inProgress;
+    document.getElementById('statDelivered').textContent = past.length;
+    document.getElementById('statRevenue').textContent = '$' + revenue.toFixed(0);
+    document.getElementById('statExpenses').textContent = '$' + totalExpenses.toFixed(0);
+    document.getElementById('statProfit').textContent = '$' + profit.toFixed(0);
+
+    renderOrderTable('tableActive', active);
+    renderOrderTable('tablePast', past);
+    renderExpenseTable(expenses);
+    renderSalesChart(orders);
+  }
+
+  function renderOrderTable(tableId, list){
+    const tbody = document.querySelector('#' + tableId + ' tbody');
+    tbody.innerHTML = '';
+    if(list.length === 0){
+      tbody.innerHTML = '<tr><td colspan="6" class="empty-note">No orders here yet.</td></tr>';
+      return;
+    }
+    list.forEach((o, idx)=>{
+      const realIdx = orderRealIndex(o);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${o.code}</td>
+        <td>${o.name || ''}</td>
+        <td>${ITEM_LABELS[o.item] || o.item} × ${o.qty}</td>
+        <td>${o.fulfilment}</td>
+        <td><input type="number" value="${o.value || 0}" style="width:80px;" onchange="updateOrderValue('${o.code}', this.value)"></td>
+        <td>
+          <select onchange="updateOrderStatus('${o.code}', this.value)">
+            ${STATUS_STEPS.map(s=>`<option value="${s}" ${s===o.status?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function orderRealIndex(o){ return o.code; }
+
+  async function updateOrderStatus(code, newStatus){
+    const orders = await loadOrders();
+    const o = orders.find(x=>x.code===code);
+    if(o){ o.status = newStatus; await saveOrders(orders); renderAdmin(); }
+  }
+  async function updateOrderValue(code, newValue){
+    const orders = await loadOrders();
+    const o = orders.find(x=>x.code===code);
+    if(o){ o.value = parseFloat(newValue)||0; await saveOrders(orders); renderAdmin(); }
+  }
+
+  function renderExpenseTable(expenses){
+    const tbody = document.querySelector('#tableExpenses tbody');
+    tbody.innerHTML = '';
+    if(expenses.length === 0){
+      tbody.innerHTML = '<tr><td colspan="3" class="empty-note">No expenses logged yet.</td></tr>';
+      return;
+    }
+    expenses.slice().reverse().forEach(e=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${e.date || ''}</td><td>${e.description}</td><td>$${parseFloat(e.amount).toFixed(2)}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  async function addExpense(){
+    const desc = document.getElementById('expDesc').value.trim();
+    const amount = parseFloat(document.getElementById('expAmount').value);
+    const date = document.getElementById('expDate').value || new Date().toISOString().slice(0,10);
+    if(!desc || isNaN(amount)){ alert('Please enter a description and amount.'); return; }
+    const expenses = await loadExpenses();
+    expenses.push({description:desc, amount:amount, date:date});
+    await saveExpenses(expenses);
+    document.getElementById('expDesc').value = '';
+    document.getElementById('expAmount').value = '';
+    document.getElementById('expDate').value = '';
+    renderAdmin();
+  }
+
+  function renderSalesChart(orders){
+    const monthly = {};
+    orders.forEach(o=>{
+      const month = (o.createdAt || '').slice(0,7); // YYYY-MM
+      if(!month) return;
+      monthly[month] = (monthly[month] || 0) + (o.value || 0);
+    });
+    const months = Object.keys(monthly).sort();
+    const values = months.map(m => monthly[m]);
+
+    const ctx = document.getElementById('salesChart');
+    if(salesChartInstance){ salesChartInstance.destroy(); }
+    salesChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: months.length ? months : ['No sales yet'],
+        datasets: [{
+          label: 'Monthly sales ($)',
+          data: values.length ? values : [0],
+          backgroundColor: '#CB9B4A',
+          borderRadius: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#D9C7B4' }, grid: { color: 'rgba(247,236,221,0.06)' } },
+          y: { ticks: { color: '#D9C7B4' }, grid: { color: 'rgba(247,236,221,0.06)' }, beginAtZero: true }
+        }
+      }
+    });
+  }
+
+  /* ---------- Upload box (visual only) ---------- */
+  const uploadBox = document.getElementById('uploadBox');
+  if(uploadBox){
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file'; fileInput.accept = 'image/*'; fileInput.style.display='none';
+    document.body.appendChild(fileInput);
+    uploadBox.addEventListener('click', ()=> fileInput.click());
+    fileInput.addEventListener('change', ()=>{
+      if(fileInput.files.length){ uploadBox.textContent = '✓ ' + fileInput.files[0].name; }
+    });
+  }
+
+  /* ---------- Sticky mobile CTA ---------- */
+  const stickyCta = document.querySelector('.sticky-cta');
+  const orderSection = document.getElementById('order');
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{ stickyCta.style.display = entry.isIntersecting ? 'none' : ''; });
+  }, {threshold:0.2});
+  io.observe(orderSection);
+</script>
+
+</body>
+</html>
