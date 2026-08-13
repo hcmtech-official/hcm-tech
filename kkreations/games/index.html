@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Creation Arcade — KKreations World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#2B1B14; --bg-alt:#3A2419; --panel:#40281C;
+    --cream:#F7ECDD; --cream-dim:#D9C7B4;
+    --berry:#E15B72; --berry-deep:#C23B54;
+    --gold:#CB9B4A; --sage:#8A9A5B;
+    --radius:2px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--cream); font-family:'Work Sans', -apple-system, sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.display{font-family:'Fraunces', Georgia, serif; font-weight:600; line-height:1.1;}
+  a{color:inherit;}
+  .wrap{max-width:1000px; margin:0 auto; padding:0 24px;}
+  .eyebrow{text-transform:uppercase; letter-spacing:0.16em; font-size:0.72rem; color:var(--gold); font-weight:600;}
+
+  header{position:sticky; top:0; z-index:50; background:rgba(43,27,20,0.94); backdrop-filter:blur(6px); border-bottom:1px solid rgba(247,236,221,0.08);}
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:1000px; margin:0 auto; flex-wrap:wrap; gap:10px;}
+  .logo{font-family:'Fraunces', serif; font-weight:700; font-size:1.15rem;}
+  .logo span{color:var(--berry);}
+  .back-link{font-size:0.85rem; color:var(--cream-dim); text-decoration:none; border:1px solid rgba(247,236,221,0.2); padding:7px 16px; border-radius:999px;}
+  .back-link:hover{border-color:var(--gold); color:var(--gold);}
+
+  .showcase-banner{
+    background:linear-gradient(90deg, rgba(225,91,114,0.1), rgba(203,155,74,0.08));
+    border-bottom:1px solid rgba(247,236,221,0.1);
+    padding:10px 24px; font-size:0.82rem; color:var(--cream-dim); text-align:center;
+  }
+  .showcase-banner strong{ color:var(--cream); }
+  .proto-badge{
+    font-size:0.65rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--gold); border:1px solid rgba(203,155,74,0.5); background:rgba(203,155,74,0.12);
+    padding:3px 8px; border-radius:999px; margin-left:8px;
+  }
+
+  .hero{padding:56px 0 40px; text-align:center;}
+  .hero h1{font-size:clamp(2rem, 5vw, 2.8rem); margin:14px 0 14px;}
+  .hero h1 em{font-style:italic; color:var(--berry);}
+  .hero p{color:var(--cream-dim); max-width:46ch; margin:0 auto; font-size:1rem;}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:22px; padding:20px 0 70px;}
+  @media (max-width:700px){ .grid{grid-template-columns:1fr;} }
+  .card{
+    background:var(--bg-alt); border:1px solid rgba(247,236,221,0.1); border-radius:var(--radius);
+    padding:26px; display:flex; flex-direction:column;
+  }
+  .card .tag{display:inline-block; font-size:0.7rem; color:var(--sage); border:1px solid var(--sage); border-radius:999px; padding:3px 10px; margin-bottom:14px; width:fit-content;}
+  .card h2{font-size:1.4rem; margin-bottom:8px;}
+  .card p{color:var(--cream-dim); font-size:0.92rem; flex:1; margin-bottom:20px;}
+  .play-btn{
+    background:var(--berry); color:var(--cream); text-decoration:none; padding:12px 22px;
+    border-radius:var(--radius); font-weight:600; font-size:0.9rem; display:inline-block; text-align:center;
+    border:1px solid var(--berry); align-self:flex-start;
+  }
+  .play-btn:hover{background:var(--berry-deep);}
+
+  footer{text-align:center; color:var(--cream-dim); font-size:0.78rem; padding:24px; border-top:1px solid rgba(247,236,221,0.08);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">K-Creation <span>Arcade</span></div>
+    <a class="back-link" href="../index.html">← KKreations World</a>
+  </div>
+</header>
+
+<div class="showcase-banner">
+  <strong>Sample showcase</strong> — a branded mini-arcade built by HCM to show how a fun, on-brand games page can sit alongside a business site.
+  <span class="proto-badge">Prototype</span>
+</div>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Games</div>
+    <h1>Play while you <em>wait</em> for your order</h1>
+    <p>A couple of quick, spicy-themed browser games — built for fun, playable on any phone, no download needed.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="grid">
+    <div class="card">
+      <span class="tag">Arcade · survival</span>
+      <h2>Spicy Escape</h2>
+      <p>He ate the ramen and it was way too hot. Dodge the falling spice and shoot water to cool him down before he overheats.</p>
+      <a class="play-btn" href="https://hcmtech-official.github.io/hcm-tech/games/spicy-escape.html" target="_blank" rel="noopener">Play now →</a>
+    </div>
+    <div class="card">
+      <span class="tag">Puzzle · physics</span>
+      <h2>Spicy Sling</h2>
+      <p>Slingshot your way through four levels of wood, stone, and ice towers, smashing the spicy enemies stacked inside.</p>
+      <a class="play-btn" href="https://hcmtech-official.github.io/hcm-tech/games/spicy-sling/" target="_blank" rel="noopener">Play now →</a>
+    </div>
+  </div>
+</div>
+
+<footer>K-Creation Arcade — sample build by HCM. Games open in a new tab.</footer>
+
+</body>
+</html>
