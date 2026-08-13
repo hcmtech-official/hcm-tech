@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Mountains Day Trip Itinerary</title>
+    <style>
+        :root {
+            --primary: #003366;
+            --secondary: #0066cc;
+            --accent: #f4a261;
+            --bg: #f8f9fa;
+            --text: #333;
+            --white: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: linear-gradient(rgba(0, 51, 102, 0.7), rgba(0, 51, 102, 0.7)), url('https://files.manuscdn.com/user_upload_by_module/session_file/87957480/RYmdFwKRwmNPRpJO.jpg');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+            padding: 5rem 1rem;
+        }
+        .container {
+            max-width: 900px;
+            margin: -3rem auto 3rem;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        h1 { margin: 0; font-size: 2.8rem; letter-spacing: 1px; }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid #eee;
+        }
+        .tab-btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #888;
+            transition: 0.3s;
+            position: relative;
+        }
+        .tab-btn.active {
+            color: var(--primary);
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: var(--primary);
+        }
+        .tab-content { display: none; animation: fadeIn 0.5s; }
+        .tab-content.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .alert {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 1.2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title {
+            color: var(--primary);
+            border-left: 6px solid var(--accent);
+            padding-left: 1.2rem;
+            margin: 2.5rem 0 1.5rem;
+            font-size: 1.6rem;
+        }
+
+        .train-card {
+            background: #f8fbff;
+            border: 1px solid #e1e8f0;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+        }
+        .train-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .timetable-container {
+            overflow-x: auto;
+        }
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: white;
+        }
+        .timetable th, .timetable td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .timetable th { 
+            background-color: var(--primary); 
+            color: white; 
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        .timetable tr:last-child td { border-bottom: none; }
+
+        .attractions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        .attraction-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .attraction-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1); 
+        }
+        .attraction-img { width: 100%; height: 220px; object-fit: cover; }
+        .attraction-info { padding: 1.5rem; }
+        .attraction-info h3 { margin: 0 0 0.8rem; color: var(--primary); font-size: 1.3rem; }
+        .attraction-info p { font-size: 0.95rem; color: #555; margin-bottom: 1rem; }
+        .bus-badge {
+            background: #d90429;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .itinerary-timeline {
+            position: relative;
+            padding-left: 2.5rem;
+            margin-top: 2rem;
+        }
+        .itinerary-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e0e0e0;
+        }
+        .timeline-item {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.15rem;
+            top: 0.25rem;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 2px var(--accent);
+            z-index: 1;
+        }
+        .time { 
+            font-weight: 700; 
+            color: var(--secondary); 
+            display: block; 
+            margin-bottom: 0.3rem;
+            font-size: 1.1rem;
+        }
+        .timeline-item p { margin: 0; color: #444; }
+
+        footer { text-align: center; padding: 3rem 1rem; color: #999; font-size: 0.9rem; background: #f1f3f5; }
+
+        @media (max-width: 600px) {
+            header { padding: 3rem 1rem; }
+            h1 { font-size: 2rem; }
+            .container { margin: 0; border-radius: 0; padding: 1.5rem; }
+            .tab-btn { padding: 0.8rem 1rem; font-size: 0.9rem; }
+            .attractions { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Blue Mountains Day Trip</h1>
+    <p>Complete Weekend Itinerary & Transport Guide</p>
+</header>
+
+<div class="container">
+    <div class="alert">
+        <span>⚠️</span>
+        <div>
+            <strong>Important Notice:</strong> Trackwork is scheduled for <strong>Aug 15-16, 2026</strong>. 
+            Buses replace Blue Mountains Line trains between Parramatta and Bathurst. 
+            Times shown are estimated based on planned replacement bus schedules.
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'saturday')">Saturday, Aug 15</button>
+        <button class="tab-btn" onclick="openTab(event, 'sunday')">Sunday, Aug 16</button>
+    </div>
+
+    <!-- SATURDAY CONTENT -->
+    <div id="saturday" class="tab-content active">
+        <h2 class="section-title">Train & Bus Timetable (Saturday)</h2>
+        <div class="train-card">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/87957480/grDCiGpPQtcgglZj.jpeg" alt="New Mariyung Intercity Train" class="train-image">
+            <div class="timetable-container">
+                <h3>Outbound: From Pendle Hill / Blacktown</h3>
+                <table class="timetable">
+                    <thead>
+                        <tr>
+                            <th>Pendle Hill (T1)</th>
+                            <th>Blacktown (Bus)</th>
+                            <th>Katoomba (Arrival)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>10:05 AM</td><td>10:18 AM</td><td>~11:45 AM</td></tr>
+                        <tr><td>11:05 AM</td><td>11:18 AM</td><td>~12:45 PM</td></tr>
+                        <tr><td>12:05 PM</td><td>12:18 PM</td><td>~1:45 PM</td></tr>
+                        <tr><td>1:05 PM</td><td>1:18 PM</td><td>~2:45 PM</td></tr>
+                    </tbody>
+                </table>
+                
+                <h3 style="margin-top:2.5rem;">Return: From Katoomba</h3>
+                <table class="timetable">
+                    <thead>
+                        <tr>
+                            <th>Katoomba (Bus)</th>
+                            <th>Blacktown (Arrival)</th>
+                            <th>Pendle Hill (Arrival)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2:31 PM</td><td>~3:50 PM</td><td>4:05 PM</td></tr>
+                        <tr><td>3:31 PM</td><td>~4:50 PM</td><td>5:05 PM</td></tr>
+                        <tr><td>4:31 PM</td><td>~5:50 PM</td><td>6:05 PM</td></tr>
+                        <tr><td>5:31 PM</td><td>~6:50 PM</td><td>7:05 PM</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUNDAY CONTENT -->
+    <div id="sunday" class="tab-content">
+        <h2 class="section-title">Train & Bus Timetable (Sunday)</h2>
+        <div class="train-card">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/87957480/oABzIAYVevshtVpZ.jpg" alt="V-Set Intercity Train" class="train-image">
+            <div class="timetable-container">
+                <h3>Outbound: From Pendle Hill / Blacktown</h3>
+                <table class="timetable">
+                    <thead>
+                        <tr>
+                            <th>Pendle Hill (T1)</th>
+                            <th>Blacktown (Bus)</th>
+                            <th>Katoomba (Arrival)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>10:05 AM</td><td>10:18 AM</td><td>~11:45 AM</td></tr>
+                        <tr><td>11:05 AM</td><td>11:18 AM</td><td>~12:45 PM</td></tr>
+                        <tr><td>12:05 PM</td><td>12:18 PM</td><td>~1:45 PM</td></tr>
+                    </tbody>
+                </table>
+                
+                <h3 style="margin-top:2.5rem;">Return: From Katoomba</h3>
+                <table class="timetable">
+                    <thead>
+                        <tr>
+                            <th>Katoomba (Bus)</th>
+                            <th>Blacktown (Arrival)</th>
+                            <th>Pendle Hill (Arrival)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2:31 PM</td><td>~3:50 PM</td><td>4:05 PM</td></tr>
+                        <tr><td>3:31 PM</td><td>~4:50 PM</td><td>5:05 PM</td></tr>
+                        <tr><td>4:31 PM</td><td>~5:50 PM</td><td>6:05 PM</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Explore Katoomba</h2>
+    <div class="attractions">
+        <div class="attraction-card">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/87957480/fHRZwcLJFZWprlWF.jpg" alt="Carrington Hotel" class="attraction-img">
+            <div class="attraction-info">
+                <h3>The Carrington Hotel</h3>
+                <p>A grand historic hotel opened in 1883. Known for its Victorian elegance, stained glass, and opulent public spaces.</p>
+                <p><strong>How to get there:</strong> A short 2-minute walk from Katoomba Station exit.</p>
+            </div>
+        </div>
+        <div class="attraction-card">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/87957480/RYmdFwKRwmNPRpJO.jpg" alt="Three Sisters" class="attraction-img">
+            <div class="attraction-info">
+                <h3>Three Sisters & Echo Point</h3>
+                <p>The iconic sandstone rock formation. Echo Point offers the best views of the valley and access to walking tracks.</p>
+                <p><span class="bus-badge">Bus 686</span> Catch the loop bus from Katoomba St (outside Carrington).</p>
+            </div>
+        </div>
+        <div class="attraction-card">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/87957480/bhOwrHewfhydOgqg.jpg" alt="Scenic World" class="attraction-img">
+            <div class="attraction-info">
+                <h3>Scenic World</h3>
+                <p>Experience the world's steepest railway, the Scenic Skyway, and the Cableway over the Jamison Valley.</p>
+                <p><span class="bus-badge">Bus 686</span> Connects directly from Echo Point or the Station.</p>
+            </div>
+        </div>
+        <div class="attraction-card">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/87957480/aeCUWQxxssoDEMVe.jpg" alt="Katoomba Street" class="attraction-img">
+            <div class="attraction-info">
+                <h3>Katoomba Street Shops</h3>
+                <p>The heart of the town, filled with art deco buildings, vintage boutiques, art galleries, and cozy cafes.</p>
+                <p><strong>How to get there:</strong> Right at the doorstep of Katoomba Station.</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Recommended Day Itinerary</h2>
+    <div class="itinerary-timeline">
+        <div class="timeline-item">
+            <span class="time">10:05 AM</span>
+            <p>Depart <strong>Pendle Hill Station</strong> via T1 Western Line. Transfer at <strong>Blacktown</strong> to the Blue Mountains replacement bus.</p>
+        </div>
+        <div class="timeline-item">
+            <span class="time">11:45 AM</span>
+            <p>Arrive at <strong>Katoomba Station</strong>. Walk to the <strong>Carrington Hotel</strong> to admire the grand architecture and gardens.</p>
+        </div>
+        <div class="timeline-item">
+            <span class="time">12:30 PM</span>
+            <p>Explore <strong>Katoomba Street</strong> and grab lunch at a local cafe (e.g., The Paragon or a cozy bakery).</p>
+        </div>
+        <div class="timeline-item">
+            <span class="time">1:30 PM</span>
+            <p>Catch <strong>Bus 686</strong> (Blue Mountains Bus Co) to <strong>Echo Point</strong> to see the <strong>Three Sisters</strong>.</p>
+        </div>
+        <div class="timeline-item">
+            <span class="time">2:30 PM</span>
+            <p>Take Bus 686 to <strong>Scenic World</strong>. Ride the Scenic Railway and Skyway for breathtaking views.</p>
+        </div>
+        <div class="timeline-item">
+            <span class="time">4:31 PM</span>
+            <p>Return to Katoomba Station and board the <strong>Replacement Bus</strong> back to Blacktown.</p>
+        </div>
+        <div class="timeline-item">
+            <span class="time">6:00 PM</span>
+            <p>Arrive at Blacktown and transfer to a T1 train back to <strong>Pendle Hill</strong>.</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 Blue Mountains Trip Planner. Timetable data is indicative for trackwork weekend Aug 15-16, 2026.</p>
+</footer>
+
+<script>
+    function openTab(evt, dayId) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(dayId).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+
+</body>
+</html>
