@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Creation Issue Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2B1B14;
+    --ink-soft:#6B5340;
+    --paper:#F7ECDD;
+    --panel:#FFFDF9;
+    --line:#E4D4BE;
+    --accent:#C23B54;
+    --accent-dark:#A32E45;
+    --todo:#8A6423;
+    --wip:#CB9B4A;
+    --done:#8A9A5B;
+    --danger:#A32E45;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  html,body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Work Sans',system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.brand,.eyebrow{font-family:'Fraunces',Georgia,serif;}
+
+  a{color:inherit;}
+  button{font-family:inherit;}
+
+  /* Header */
+  header.top{
+    background:var(--ink);
+    color:#fff;
+    padding:16px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    font-weight:700;
+    font-size:1.15rem;
+    letter-spacing:0.01em;
+  }
+  .brand .mark{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:28px;height:28px;
+    background:var(--accent);
+    color:#fff;
+    border-radius:6px;
+    font-size:0.8rem;
+    font-weight:700;
+  }
+  .brand .sub{
+    color:#9AA5B1;
+    font-weight:500;
+    font-size:0.85rem;
+    font-family:'Inter',sans-serif;
+  }
+  .proto-badge{
+    font-family:'Inter',sans-serif;
+    font-size:0.68rem;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--wip);
+    border:1px solid rgba(199,134,43,0.5);
+    background:rgba(199,134,43,0.12);
+    padding:3px 8px;
+    border-radius:999px;
+  }
+  nav.tabs{
+    display:flex;
+    gap:4px;
+    background:rgba(255,255,255,0.06);
+    padding:4px;
+    border-radius:8px;
+  }
+  nav.tabs button{
+    background:transparent;
+    border:none;
+    color:#C9D1DB;
+    padding:8px 16px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:0.9rem;
+    font-weight:600;
+    transition:background 0.15s, color 0.15s;
+  }
+  nav.tabs button:hover{color:#fff;}
+  nav.tabs button.active{
+    background:var(--accent);
+    color:#fff;
+  }
+
+  main{
+    max-width:1100px;
+    margin:0 auto;
+    padding:28px 24px 60px;
+  }
+  .view{display:none;}
+  .view.active{display:block;animation:fade .18s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+  .page-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .page-head h1{
+    margin:0 0 4px;
+    font-size:1.5rem;
+  }
+  .page-head p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:0.92rem;
+  }
+
+  /* Board */
+  .board{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+  }
+  @media (max-width:820px){
+    .board{grid-template-columns:1fr;}
+  }
+  .column{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px;
+    min-height:120px;
+  }
+  .column-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:12px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-size:0.72rem;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .dot.todo{background:var(--todo);}
+  .dot.wip{background:var(--wip);}
+  .dot.done{background:var(--done);}
+  .count-pill{
+    background:var(--paper);
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    font-size:0.75rem;
+    font-weight:600;
+    padding:2px 8px;
+    border-radius:999px;
+  }
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-left:3px solid var(--todo);
+    border-radius:6px;
+    padding:12px 12px 10px;
+    margin-bottom:10px;
+  }
+  .card.wip{border-left-color:var(--wip);}
+  .card.done{border-left-color:var(--done);}
+  .card h4{margin:0 0 4px;font-size:0.95rem;font-weight:600;}
+  .card p.desc{
+    margin:0 0 8px;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    line-height:1.4;
+    white-space:pre-wrap;
+  }
+  .card .meta{
+    font-size:0.72rem;
+    color:#8A95A3;
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+  }
+  .card .actions{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  .card .actions button{
+    font-size:0.72rem;
+    font-weight:600;
+    padding:5px 9px;
+    border-radius:5px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    cursor:pointer;
+    color:var(--ink);
+  }
+  .card .actions button:hover{border-color:var(--accent);color:var(--accent-dark);}
+  .card .actions button.danger:hover{border-color:var(--danger);color:var(--danger);}
+  .empty-note{
+    color:#9AA5B1;
+    font-size:0.85rem;
+    padding:8px 2px;
+  }
+
+  /* Forms */
+  .form-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:24px;
+    max-width:520px;
+  }
+  label{
+    display:block;
+    font-size:0.82rem;
+    font-weight:600;
+    margin:14px 0 6px;
+  }
+  label:first-of-type{margin-top:0;}
+  input[type=text],input[type=password],textarea{
+    width:100%;
+    padding:10px 11px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    font-size:0.9rem;
+    font-family:inherit;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  input:focus,textarea:focus{
+    outline:2px solid var(--accent);
+    outline-offset:1px;
+    border-color:var(--accent);
+  }
+  textarea{min-height:100px;resize:vertical;}
+  .btn-primary{
+    margin-top:18px;
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    padding:11px 20px;
+    border-radius:6px;
+    font-weight:600;
+    font-size:0.9rem;
+    cursor:pointer;
+  }
+  .btn-primary:hover{background:var(--accent-dark);}
+  .btn-secondary{
+    margin-top:18px;
+    margin-left:8px;
+    background:transparent;
+    color:var(--ink-soft);
+    border:1px solid var(--line);
+    padding:10px 18px;
+    border-radius:6px;
+    font-weight:600;
+    font-size:0.9rem;
+    cursor:pointer;
+  }
+  .confirm-msg{
+    margin-top:14px;
+    background:#EAF4EC;
+    border:1px solid #BFE0C6;
+    color:#2A6B3F;
+    padding:10px 12px;
+    border-radius:6px;
+    font-size:0.85rem;
+    display:none;
+  }
+
+  /* Admin */
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:28px;
+  }
+  @media (max-width:700px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
+  .stat{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px;
+  }
+  .stat .num{font-size:1.7rem;font-weight:700;font-family:'Fraunces',serif;}
+  .stat .label{font-size:0.75rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;font-weight:600;margin-top:2px;}
+
+  .section-title{
+    font-size:1.05rem;
+    margin:32px 0 12px;
+    font-weight:700;
+  }
+  .admin-list{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .admin-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    font-size:0.88rem;
+  }
+  .admin-row:last-child{border-bottom:none;}
+  .admin-row button{
+    background:none;
+    border:none;
+    color:var(--danger);
+    font-size:0.78rem;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .top-bar-admin{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+  }
+  .logout-link{
+    font-size:0.82rem;
+    font-weight:600;
+    color:var(--accent-dark);
+    background:none;
+    border:none;
+    cursor:pointer;
+    text-decoration:underline;
+  }
+  .error-msg{
+    color:var(--danger);
+    font-size:0.85rem;
+    margin-top:10px;
+    display:none;
+  }
+  footer{
+    text-align:center;
+    color:#9AA5B1;
+    font-size:0.78rem;
+    padding:20px;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <span class="mark">KC</span>
+    <span>K-Creation Issue Tracker</span>
+    <span class="sub">Raise it. Track it. Close it.</span>
+    <span class="proto-badge">Prototype</span>
+  </div>
+  <nav class="tabs">
+    <button data-view="board" class="active">Board</button>
+    <button data-view="raise">Raise an Issue</button>
+    <button data-view="admin">Admin</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- BOARD VIEW -->
+  <section id="view-board" class="view active">
+    <div class="page-head">
+      <div>
+        <h1>Issue Board</h1>
+        <p>Everything raised, sorted by where it stands.</p>
+      </div>
+    </div>
+    <div class="board" id="board-columns"></div>
+  </section>
+
+  <!-- RAISE ISSUE VIEW -->
+  <section id="view-raise" class="view">
+    <div class="page-head">
+      <div>
+        <h1>Raise an Issue</h1>
+        <p>Tell us what's wrong. It lands straight on the board as To Do.</p>
+      </div>
+    </div>
+    <div class="form-card">
+      <label for="r-name">Your name</label>
+      <input type="text" id="r-name" placeholder="e.g. Priya">
+      <label for="r-title">Issue title</label>
+      <input type="text" id="r-title" placeholder="Short summary of the problem">
+      <label for="r-desc">Description</label>
+      <textarea id="r-desc" placeholder="What happened, what you expected, any steps to reproduce"></textarea>
+      <button class="btn-primary" onclick="submitIssue()">Submit issue</button>
+      <div class="confirm-msg" id="raise-confirm">Issue submitted — it's now on the board under To Do.</div>
+    </div>
+  </section>
+
+  <!-- ADMIN VIEW -->
+  <section id="view-admin" class="view">
+
+    <div id="admin-login-box">
+      <div class="page-head">
+        <div>
+          <h1>Admin sign in</h1>
+          <p>Sign in to manage issues and view stats.</p>
+        </div>
+      </div>
+      <div class="form-card">
+        <label for="a-user">Username</label>
+        <input type="text" id="a-user" placeholder="admin">
+        <label for="a-pass">Password</label>
+        <input type="password" id="a-pass" placeholder="••••••••">
+        <button class="btn-primary" onclick="attemptLogin()">Sign in</button>
+        <div class="error-msg" id="login-error">Incorrect username or password.</div>
+      </div>
+    </div>
+
+    <div id="admin-dashboard" style="display:none;">
+      <div class="top-bar-admin">
+        <div>
+          <h1 style="margin:0;">Admin</h1>
+          <p style="margin:4px 0 0;color:var(--ink-soft);font-size:0.9rem;">Signed in as <strong id="admin-current-user"></strong></p>
+        </div>
+        <button class="logout-link" onclick="logout()">Sign out</button>
+      </div>
+
+      <div class="stats-grid" id="stats-grid"></div>
+
+      <h2 class="section-title">Manage issues</h2>
+      <div class="board" id="admin-board-columns"></div>
+
+      <h2 class="section-title">Admins</h2>
+      <div class="admin-list" id="admin-list"></div>
+
+      <div class="form-card" style="margin-top:16px;">
+        <label for="new-admin-user">New admin username</label>
+        <input type="text" id="new-admin-user" placeholder="e.g. harish">
+        <label for="new-admin-pass">New admin password</label>
+        <input type="password" id="new-admin-pass" placeholder="Set a password">
+        <button class="btn-primary" onclick="addAdmin()">Add admin</button>
+        <div class="error-msg" id="add-admin-error"></div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>K-Creation Issue Tracker — prototype build. Data is stored in this browser only.</footer>
+
+<script>
+/* ---------- storage helpers ---------- */
+const ISSUES_KEY = 'kc_issues';
+const ADMINS_KEY = 'kc_admins';
+const SESSION_KEY = 'kc_session';
+
+function loadIssues(){
+  return JSON.parse(localStorage.getItem(ISSUES_KEY) || '[]');
+}
+function saveIssues(issues){
+  localStorage.setItem(ISSUES_KEY, JSON.stringify(issues));
+}
+function loadAdmins(){
+  let admins = JSON.parse(localStorage.getItem(ADMINS_KEY) || 'null');
+  if(!admins){
+    admins = [{username:'admin', password:'kcreation2026'}];
+    localStorage.setItem(ADMINS_KEY, JSON.stringify(admins));
+  }
+  return admins;
+}
+function saveAdmins(admins){
+  localStorage.setItem(ADMINS_KEY, JSON.stringify(admins));
+}
+function getSession(){
+  return sessionStorage.getItem(SESSION_KEY);
+}
+function setSession(username){
+  sessionStorage.setItem(SESSION_KEY, username);
+}
+function clearSession(){
+  sessionStorage.removeItem(SESSION_KEY);
+}
+
+function uid(){
+  return 'iss_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+}
+function formatDate(iso){
+  const d = new Date(iso);
+  return d.toLocaleDateString(undefined,{day:'numeric',month:'short'}) + ' · ' +
+         d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+}
+
+/* ---------- navigation ---------- */
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=> switchView(btn.dataset.view));
+});
+function switchView(name){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.view===name));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  if(name==='board') renderBoard();
+  if(name==='admin') renderAdminView();
+}
+
+/* ---------- raise issue ---------- */
+function submitIssue(){
+  const name = document.getElementById('r-name').value.trim();
+  const title = document.getElementById('r-title').value.trim();
+  const desc = document.getElementById('r-desc').value.trim();
+  if(!title){
+    alert('Please add a short title for the issue.');
+    return;
+  }
+  const issues = loadIssues();
+  issues.unshift({
+    id: uid(),
+    title,
+    description: desc,
+    reporter: name || 'Anonymous',
+    status: 'todo',
+    createdAt: new Date().toISOString()
+  });
+  saveIssues(issues);
+  document.getElementById('r-name').value='';
+  document.getElementById('r-title').value='';
+  document.getElementById('r-desc').value='';
+  const confirmBox = document.getElementById('raise-confirm');
+  confirmBox.style.display='block';
+  setTimeout(()=>confirmBox.style.display='none', 4000);
+}
+
+/* ---------- board rendering (read-only, public) ---------- */
+const STATUSES = [
+  {key:'todo', label:'To Do', cls:'todo'},
+  {key:'inprogress', label:'In Progress', cls:'wip'},
+  {key:'done', label:'Done', cls:'done'}
+];
+
+function renderBoard(){
+  renderBoardInto('board-columns', false);
+}
+
+function renderBoardInto(containerId, editable){
+  const issues = loadIssues();
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  STATUSES.forEach(s=>{
+    const items = issues.filter(i=>i.status===s.key);
+    const col = document.createElement('div');
+    col.className = 'column';
+    col.innerHTML = `
+      <div class="column-head">
+        <span class="eyebrow"><span class="dot ${s.cls}"></span>${s.label}</span>
+        <span class="count-pill">${items.length}</span>
+      </div>
+      <div class="cards"></div>
+    `;
+    const cardsWrap = col.querySelector('.cards');
+    if(items.length===0){
+      const p = document.createElement('p');
+      p.className='empty-note';
+      p.textContent = 'Nothing here yet.';
+      cardsWrap.appendChild(p);
+    }
+    items.forEach(issue=>{
+      cardsWrap.appendChild(renderCard(issue, s, editable));
+    });
+    container.appendChild(col);
+  });
+}
+
+function renderCard(issue, statusObj, editable){
+  const card = document.createElement('div');
+  card.className = 'card ' + statusObj.cls;
+  let actionsHtml = '';
+  if(editable){
+    const idx = STATUSES.findIndex(s=>s.key===issue.status);
+    if(idx>0){
+      actionsHtml += `<button onclick="moveIssue('${issue.id}','${STATUSES[idx-1].key}')">← ${STATUSES[idx-1].label}</button>`;
+    }
+    if(idx<STATUSES.length-1){
+      actionsHtml += `<button onclick="moveIssue('${issue.id}','${STATUSES[idx+1].key}')">${STATUSES[idx+1].label} →</button>`;
+    }
+    actionsHtml += `<button class="danger" onclick="deleteIssue('${issue.id}')">Delete</button>`;
+  }
+  card.innerHTML = `
+    <h4>${escapeHtml(issue.title)}</h4>
+    ${issue.description ? `<p class="desc">${escapeHtml(issue.description)}</p>` : ''}
+    <div class="meta"><span>${escapeHtml(issue.reporter)}</span><span>${formatDate(issue.createdAt)}</span></div>
+    ${editable ? `<div class="actions">${actionsHtml}</div>` : ''}
+  `;
+  return card;
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function moveIssue(id, newStatus){
+  const issues = loadIssues();
+  const issue = issues.find(i=>i.id===id);
+  if(issue){
+    issue.status = newStatus;
+    if(newStatus==='done') issue.resolvedAt = new Date().toISOString();
+    saveIssues(issues);
+  }
+  renderAdminView();
+}
+function deleteIssue(id){
+  if(!confirm('Delete this issue permanently?')) return;
+  let issues = loadIssues();
+  issues = issues.filter(i=>i.id!==id);
+  saveIssues(issues);
+  renderAdminView();
+}
+
+/* ---------- admin auth ---------- */
+function attemptLogin(){
+  const user = document.getElementById('a-user').value.trim();
+  const pass = document.getElementById('a-pass').value;
+  const admins = loadAdmins();
+  const match = admins.find(a=>a.username===user && a.password===pass);
+  const errorEl = document.getElementById('login-error');
+  if(match){
+    setSession(user);
+    errorEl.style.display='none';
+    document.getElementById('a-pass').value='';
+    renderAdminView();
+  }else{
+    errorEl.style.display='block';
+  }
+}
+function logout(){
+  clearSession();
+  renderAdminView();
+}
+
+function renderAdminView(){
+  const session = getSession();
+  const loginBox = document.getElementById('admin-login-box');
+  const dash = document.getElementById('admin-dashboard');
+  if(!session){
+    loginBox.style.display='block';
+    dash.style.display='none';
+    return;
+  }
+  loginBox.style.display='none';
+  dash.style.display='block';
+  document.getElementById('admin-current-user').textContent = session;
+
+  const issues = loadIssues();
+  const total = issues.length;
+  const todo = issues.filter(i=>i.status==='todo').length;
+  const wip = issues.filter(i=>i.status==='inprogress').length;
+  const done = issues.filter(i=>i.status==='done').length;
+
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat"><div class="num">${total}</div><div class="label">Total raised</div></div>
+    <div class="stat"><div class="num">${todo}</div><div class="label">To do</div></div>
+    <div class="stat"><div class="num">${wip}</div><div class="label">In progress</div></div>
+    <div class="stat"><div class="num">${done}</div><div class="label">Resolved</div></div>
+  `;
+
+  renderBoardInto('admin-board-columns', true);
+  renderAdminList();
+}
+
+function renderAdminList(){
+  const admins = loadAdmins();
+  const list = document.getElementById('admin-list');
+  list.innerHTML = admins.map(a=>`
+    <div class="admin-row">
+      <span>${escapeHtml(a.username)}</span>
+      ${admins.length>1 ? `<button onclick="removeAdmin('${escapeHtml(a.username)}')">Remove</button>` : ''}
+    </div>
+  `).join('');
+}
+
+function addAdmin(){
+  const user = document.getElementById('new-admin-user').value.trim();
+  const pass = document.getElementById('new-admin-pass').value;
+  const errorEl = document.getElementById('add-admin-error');
+  const admins = loadAdmins();
+  if(!user || !pass){
+    errorEl.textContent = 'Enter a username and password.';
+    errorEl.style.display='block';
+    return;
+  }
+  if(admins.some(a=>a.username===user)){
+    errorEl.textContent = 'That username already exists.';
+    errorEl.style.display='block';
+    return;
+  }
+  admins.push({username:user, password:pass});
+  saveAdmins(admins);
+  document.getElementById('new-admin-user').value='';
+  document.getElementById('new-admin-pass').value='';
+  errorEl.style.display='none';
+  renderAdminList();
+}
+function removeAdmin(username){
+  let admins = loadAdmins();
+  if(admins.length<=1) return;
+  if(!confirm(`Remove admin "${username}"?`)) return;
+  admins = admins.filter(a=>a.username!==username);
+  saveAdmins(admins);
+  if(getSession()===username) logout();
+  renderAdminList();
+}
+
+/* ---------- init ---------- */
+loadAdmins();
+renderBoard();
+</script>
+
+</body>
+</html>
