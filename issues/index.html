@@ -467,13 +467,26 @@
 
 </main>
 
-<footer>HCM Issue Tracker — prototype build. Data is stored in this browser only.</footer>
+<footer>HCM Issue Tracker — prototype build. Data is stored in this browser only, and issues reset daily.</footer>
 
 <script>
 /* ---------- storage helpers ---------- */
 const ISSUES_KEY = 'hcm_issues';
 const ADMINS_KEY = 'hcm_admins';
 const SESSION_KEY = 'hcm_session';
+const RESET_DATE_KEY = 'hcm_last_reset_date';
+
+function todayStr(){
+  return new Date().toISOString().slice(0,10); // YYYY-MM-DD
+}
+function runDailyReset(){
+  const lastReset = localStorage.getItem(RESET_DATE_KEY);
+  const today = todayStr();
+  if(lastReset !== today){
+    localStorage.setItem(ISSUES_KEY, '[]');
+    localStorage.setItem(RESET_DATE_KEY, today);
+  }
+}
 
 function loadIssues(){
   return JSON.parse(localStorage.getItem(ISSUES_KEY) || '[]');
@@ -732,6 +745,7 @@ function removeAdmin(username){
 }
 
 /* ---------- init ---------- */
+runDailyReset();
 loadAdmins();
 renderBoard();
 </script>
