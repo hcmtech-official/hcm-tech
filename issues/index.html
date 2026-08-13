@@ -70,6 +70,18 @@
     font-size:0.85rem;
     font-family:'Inter',sans-serif;
   }
+  .proto-badge{
+    font-family:'Inter',sans-serif;
+    font-size:0.68rem;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--wip);
+    border:1px solid rgba(199,134,43,0.5);
+    background:rgba(199,134,43,0.12);
+    padding:3px 8px;
+    border-radius:999px;
+  }
   nav.tabs{
     display:flex;
     gap:4px;
@@ -362,6 +374,7 @@
     <span class="mark">HCM</span>
     <span>Issue Tracker</span>
     <span class="sub">Raise it. Track it. Close it.</span>
+    <span class="proto-badge">Prototype</span>
   </div>
   <nav class="tabs">
     <button data-view="board" class="active">Board</button>
@@ -454,7 +467,7 @@
 
 </main>
 
-<footer>HCM Issue Tracker — data is stored in this browser only.</footer>
+<footer>HCM Issue Tracker — prototype build. Data is stored in this browser only.</footer>
 
 <script>
 /* ---------- storage helpers ---------- */
