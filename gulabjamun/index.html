@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shahi Royal Gulab Jamun | Fresh Homemade Sweets Delivered</title>
+    <style>
+        :root {
+            --primary: #5c1d24;
+            --secondary: #8c2833;
+            --accent: #d4af37;
+            --bg: #fffbf7;
+            --card-bg: #ffffff;
+            --text: #2c2c2c;
+            --text-light: #666666;
+            --success: #27ae60;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 1.5rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .free-delivery-banner {
+            background-color: var(--accent);
+            color: #1a1a1a;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 1.5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        @media(min-width: 768px) {
+            .hero {
+                flex-direction: row;
+                text-align: left;
+                justify-content: space-between;
+                gap: 3rem;
+                padding: 4rem 2rem;
+            }
+        }
+        .hero-content {
+            flex: 1;
+        }
+        .hero-content h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+        .hero-image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        .hero-image {
+            width: 100%;
+            max-width: 400px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 20px 40px rgba(92, 29, 36, 0.25);
+            border: 8px solid white;
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.15);
+            color: #b38f27;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--accent);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            padding: 0 1.5rem;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            border: 1px solid #f0e6df;
+        }
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .price-option {
+            border: 2px solid #e8d7d0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .price-option:hover, .price-option.selected {
+            border-color: var(--primary);
+            background-color: #fcf6f4;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(92,29,36,0.1);
+        }
+        .price-option input {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            accent-color: var(--primary);
+        }
+        .price-option h3 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .price-option .price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        .price-option .desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--primary);
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid #dcd6d0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(92,29,36,0.1);
+        }
+        .btn-order {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1.1rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(92,29,36,0.25);
+            margin-top: 1.5rem;
+        }
+        .btn-order:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+            text-align: center;
+        }
+        .feature-box {
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #f0e6df;
+        }
+        .feature-box h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        .feature-box p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .modal-content h3 { color: var(--primary); margin-bottom: 1rem; font-size: 1.8rem; }
+        .modal-content p { color: var(--text-light); margin-bottom: 1.5rem; }
+        .btn-close {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            border-top: 1px solid #e8d7d0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="free-delivery-banner">
+    ✨ Free Delivery Across Local Area on All Orders • Freshly Made Daily ✨
+</div>
+
+<header>
+    <h2 style="font-size: 1.4rem; letter-spacing: 0.5px;">Shahi Royal Sweets</h2>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <span class="badge">100% Authentic & Homemade</span>
+        <h1>Melt-in-Your-Mouth Royal Gulab Jamun</h1>
+        <p>Crafted with pure khoya, infused with aromatic cardamom and rose-scented sugar syrup. Prepared fresh upon order for authentic Indian celebrations and cravings.</p>
+        <div style="display: flex; gap: 1rem; align-items: center; justify-content: center; flex-wrap: wrap;">
+            <a href="#order-section" class="btn-order" style="display: inline-block; padding: 0.9rem 2rem; margin-top: 0; text-decoration: none;">Order Fresh Now</a>
+        </div>
+    </div>
+    <div class="hero-image-container">
+        <img src="https://files.manuscdn.com/user_upload_by_module/session_file/87957480/MptnwRUJzkLMwKvB.jpeg" alt="Delicious Gulab Jamun" class="hero-image">
+    </div>
+</section>
+
+<div class="features">
+    <div class="feature-box">
+        <h4>🌿 Pure Desi Ghee & Khoya</h4>
+        <p>Traditional slow-cooked khoya recipe with zero artificial preservatives.</p>
+    </div>
+    <div class="feature-box">
+        <h4>🚚 Free Delivery</h4>
+        <p>Brought fresh to your doorstep safely packed and warm.</p>
+    </div>
+    <div class="feature-box">
+        <h4>⭐ Made Fresh Daily</h4>
+        <p>Small batches prepared every morning to ensure maximum softness.</p>
+    </div>
+</div>
+
+<div class="container" id="order-section">
+    <div class="card">
+        <h2>Select Your Portion & Order</h2>
+        <form id="orderForm" onsubmit="handleOrder(event)">
+            <label style="display: block; font-weight: 600; margin-bottom: 0.8rem; color: var(--primary);">Choose Package:</label>
+            <div class="pricing-grid">
+                <label class="price-option selected" onclick="selectOption(this)">
+                    <input type="radio" name="package" value="Box of 10 Pieces" checked>
+                    <h3>Box of 10</h3>
+                    <div class="price">$18</div>
+                    <div class="desc">Perfect for family tea time</div>
+                </label>
+                <label class="price-option" onclick="selectOption(this)">
+                    <input type="radio" name="package" value="1 KG Party Pack (~25 pcs)">
+                    <h3>1 KG Party Pack</h3>
+                    <div class="price">$32</div>
+                    <div class="desc">Approx. 25-30 pieces in rich syrup</div>
+                </label>
+                <label class="price-option" onclick="selectOption(this)">
+                    <input type="radio" name="package" value="2 KG Family Feast (~55 pcs)">
+                    <h3>2 KG Family Feast</h3>
+                    <div class="price">$58</div>
+                    <div class="desc">Best value for guests & parties</div>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" required placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number (WhatsApp preferred)</label>
+                <input type="tel" id="phone" required placeholder="e.g. 0412 345 678">
+            </div>
+
+            <div class="form-group">
+                <label for="address">Delivery Address</label>
+                <textarea id="address" rows="3" required placeholder="Street address, suburb, and delivery notes"></textarea>
+            </div>
+
+            <button type="submit" class="btn-order">Place Order (Free Delivery)</button>
+        </form>
+    </div>
+</div>
+
+<div class="modal" id="successModal">
+    <div class="modal-content">
+        <h3>Order Received! 🎉</h3>
+        <p id="modalMessage">Thank you! Your fresh Gulab Jamun order has been securely placed. We will contact you via phone/WhatsApp shortly to confirm delivery time.</p>
+        <button class="btn-close" onclick="closeModal()">Awesome</button>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 Shahi Royal Sweets Australia. Authentic Homemade Mithai Delivered Fresh.</p>
+</footer>
+
+<script>
+    function selectOption(element) {
+        document.querySelectorAll('.price-option').forEach(opt => opt.classList.remove('selected'));
+        element.classList.add('selected');
+        element.querySelector('input').checked = true;
+    }
+
+    function handleOrder(event) {
+        event.preventDefault();
+        const pkg = document.querySelector('input[name="package"]:checked').value;
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+
+        // Construct confirmation text
+        document.getElementById('modalMessage').innerHTML = `Thank you, <strong>${name}</strong>! Your order for <strong>${pkg}</strong> with <strong>Free Delivery</strong> has been placed successfully.<br><br>We will confirm your delivery via WhatsApp/SMS at <strong>${phone}</strong>.`;
+        document.getElementById('successModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('successModal').style.display = 'none';
+        document.getElementById('orderForm').reset();
+    }
+</script>
+
+</body>
+</html>
