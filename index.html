@@ -126,6 +126,9 @@
   .status{ font-size:0.74rem; color:var(--teal-dark); font-family:'IBM Plex Mono', monospace; background:var(--mint); padding:4px 10px; border-radius:20px; }
   .status.open{ color:var(--slate); background:#F2F2F3; }
   .status.proto{ color:#8A5A1C; background:#FCEDD8; }
+  .li-right{ display:flex; align-items:center; gap:8px; }
+  .android-badge{ font-size:0.74rem; font-family:'IBM Plex Mono', monospace; background:#E8F5E9; color:#2E7D32; padding:4px 10px; border-radius:20px; text-decoration:none !important; display:inline-flex; align-items:center; gap:4px; border:none; }
+  .android-badge:hover{ background:#C8E6C9; color:#2E7D32; }
 
   footer{ border-top:1px solid var(--line); padding:30px 0 40px; margin-top:24px; }
   footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
@@ -221,6 +224,13 @@
     <ul class="portfolio-list">
       <li><span>Super Fee Leak Checker</span> <span class="status">live — v1</span></li>
       <li><span><a href="issues/" target="_blank" rel="noopener">HCM Issue Tracker</a></span> <span class="status proto">prototype</span></li>
+      <li>
+        <span><a href="kkreations/" target="_blank" rel="noopener">KKreations World (Cake Creation)</a></span>
+        <span class="li-right">
+          <span class="status">live</span>
+          <a class="android-badge" href="https://github.com/hcmtech-official/kkreations-world-android/releases/download/latest-apk/app-debug.apk" title="Download the Android app (.apk, direct download)">🤖 Android</a>
+        </span>
+      </li>
       <li><span><a href="games/" target="_blank" rel="noopener">Games</a></span> <span class="status">live</span></li>
       <li><span>Next tool</span> <span class="status open">open</span></li>
       <li><span>Your project?</span> <span class="status open">get in touch</span></li>
