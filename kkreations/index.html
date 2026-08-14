@@ -176,6 +176,16 @@
   #admin{background:var(--bg-alt);}
   .admin-lock{max-width:380px; margin:0 auto; text-align:center;}
   .admin-lock input{margin:14px 0;}
+  .admin-lock input.shake{animation:shake 0.3s;}
+  @keyframes shake{0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);}}
+  .admin-error{color:#E8846B; font-size:0.85rem; min-height:1.2em; margin-top:-4px; margin-bottom:8px; opacity:0; transition:opacity 0.15s;}
+  .admin-error.show{opacity:1;}
+  .admin-lock button[disabled]{opacity:0.6; cursor:default;}
+  #adminDashboard{animation:fadeInUp 0.35s ease;}
+  @keyframes fadeInUp{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+  .admin-topbar{display:flex; justify-content:flex-end; margin-bottom:18px;}
+  .admin-logout{background:transparent; border:1px solid rgba(247,236,221,0.2); color:var(--cream-dim); padding:7px 14px; border-radius:999px; font-size:0.82rem; cursor:pointer;}
+  .admin-logout:hover{border-color:var(--gold); color:var(--gold);}
   .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-bottom:32px;}
   .stat-card{background:var(--panel); border-radius:var(--radius); padding:18px; border-top:2px solid var(--gold);}
   .stat-card .num{font-family:'Fraunces',serif; font-size:1.7rem; color:var(--gold); font-weight:700;}
@@ -669,11 +679,15 @@
     <div class="admin-lock" id="adminLock">
       <p style="color:var(--cream-dim); margin-bottom:10px;">Enter the admin password to view orders and accounting.</p>
       <input id="adminPassword" type="password" placeholder="Admin password" onkeydown="if(event.key==='Enter') checkAdminLogin()">
-      <button class="btn-primary" onclick="checkAdminLogin()">Enter dashboard</button>
+      <div class="admin-error" id="adminError"></div>
+      <button class="btn-primary" id="adminLoginBtn" onclick="checkAdminLogin()">Enter dashboard</button>
       <p class="form-note" style="margin-top:12px;">Default password: <code>kkreations2026</code> — change this in the code before going live (see build notes).</p>
     </div>
 
     <div id="adminDashboard" style="display:none;">
+      <div class="admin-topbar">
+        <button class="admin-logout" onclick="adminLogout()">Log out</button>
+      </div>
       <div class="stat-grid">
         <div class="stat-card"><div class="num" id="statActive">0</div><div class="lbl">Active orders</div></div>
         <div class="stat-card"><div class="num" id="statInProgress">0</div><div class="lbl">In progress</div></div>
@@ -689,9 +703,9 @@
       </div>
 
       <div class="admin-tabs">
-        <button class="admin-tab active" onclick="switchAdminTab('active')">Active orders</button>
-        <button class="admin-tab" onclick="switchAdminTab('past')">Past orders</button>
-        <button class="admin-tab" onclick="switchAdminTab('expenses')">Expenses</button>
+        <button class="admin-tab active" onclick="switchAdminTab('active', event)">Active orders</button>
+        <button class="admin-tab" onclick="switchAdminTab('past', event)">Past orders</button>
+        <button class="admin-tab" onclick="switchAdminTab('expenses', event)">Expenses</button>
       </div>
 
       <div class="admin-panel active" id="panel-active">
@@ -999,21 +1013,74 @@
 
   /* ---------- Admin ---------- */
   const ADMIN_PASSWORD = 'kkreations2026'; // CHANGE THIS before going live — see build notes
-  function checkAdminLogin(){
-    const val = document.getElementById('adminPassword').value;
-    if(val === ADMIN_PASSWORD){
-      document.getElementById('adminLock').style.display = 'none';
-      document.getElementById('adminDashboard').style.display = 'block';
-      renderAdmin();
-    }else{
-      alert('Incorrect password.');
-    }
+  const ADMIN_SESSION_KEY = 'kkreationsAdminSession';
+
+  function showAdminError(message){
+    const errorEl = document.getElementById('adminError');
+    errorEl.textContent = message;
+    errorEl.classList.add('show');
+    const input = document.getElementById('adminPassword');
+    input.classList.remove('shake');
+    void input.offsetWidth; // restart animation
+    input.classList.add('shake');
   }
 
-  function switchAdminTab(tab){
+  function unlockAdminDashboard(){
+    document.getElementById('adminLock').style.display = 'none';
+    document.getElementById('adminDashboard').style.display = 'block';
+    renderAdmin();
+  }
+
+  function checkAdminLogin(){
+    const input = document.getElementById('adminPassword');
+    const val = input.value.trim();
+    const btn = document.getElementById('adminLoginBtn');
+
+    if(!val){
+      showAdminError('Enter the admin password to continue.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Checking…';
+
+    // Small deliberate delay so the check reads as a real verification step,
+    // not an instant client-side comparison.
+    setTimeout(() => {
+      if(val === ADMIN_PASSWORD){
+        sessionStorage.setItem(ADMIN_SESSION_KEY, '1');
+        document.getElementById('adminError').classList.remove('show');
+        unlockAdminDashboard();
+      }else{
+        showAdminError('Incorrect password — please try again.');
+        input.value = '';
+        input.focus();
+      }
+      btn.disabled = false;
+      btn.textContent = 'Enter dashboard';
+    }, 350);
+  }
+
+  function adminLogout(){
+    sessionStorage.removeItem(ADMIN_SESSION_KEY);
+    document.getElementById('adminDashboard').style.display = 'none';
+    document.getElementById('adminLock').style.display = 'block';
+    document.getElementById('adminPassword').value = '';
+  }
+
+  // Restore the session within the same tab (cleared on tab/browser close)
+  // so refreshing the page doesn't force a re-login.
+  document.addEventListener('DOMContentLoaded', () => {
+    if(sessionStorage.getItem(ADMIN_SESSION_KEY) === '1'){
+      unlockAdminDashboard();
+    }
+  });
+
+  function switchAdminTab(tab, evt){
+    const clicked = evt ? evt.target : (typeof event !== 'undefined' ? event.target : null);
     document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
     document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
-    event.target.classList.add('active');
+    if(clicked) clicked.classList.add('active');
     document.getElementById('panel-' + tab).classList.add('active');
   }
 
