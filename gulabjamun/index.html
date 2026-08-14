@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shahi Royal Gulab Jamun | Fresh Homemade Sweets Delivered</title>
+    <title>Nosh, India | Authentic Homemade Gulab Jamun Delivered Fresh</title>
     <style>
         :root {
             --primary: #5c1d24;
@@ -105,10 +105,44 @@
             margin-bottom: 1rem;
             border: 1px solid var(--accent);
         }
+        .heritage-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #f3e5ab, #d4af37);
+            color: #3b270c;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            border: 1px solid #b89728;
+        }
         .container {
             max-width: 800px;
             margin: 0 auto 4rem;
             padding: 0 1.5rem;
+        }
+        .story-section {
+            background: #ffffff;
+            border-left: 5px solid var(--accent);
+            padding: 2.5rem;
+            border-radius: 0 16px 16px 0;
+            margin: 2rem auto 4rem;
+            max-width: 800px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+        }
+        .story-section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .story-section p {
+            font-size: 1.05rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.7;
         }
         .card {
             background: var(--card-bg);
@@ -277,12 +311,14 @@
 </div>
 
 <header>
-    <h2 style="font-size: 1.4rem; letter-spacing: 0.5px;">Shahi Royal Sweets</h2>
+    <h2 style="font-size: 1.4rem; letter-spacing: 0.5px;">Nosh, India</h2>
 </header>
 
 <section class="hero">
     <div class="hero-content">
-        <span class="badge">100% Authentic & Homemade</span>
+        <div class="heritage-badge">
+            👑 Crafted from a 50-Year-Old Family Recipe
+        </div>
         <h1>Melt-in-Your-Mouth Royal Gulab Jamun</h1>
         <p>Crafted with pure khoya, infused with aromatic cardamom and rose-scented sugar syrup. Prepared fresh upon order for authentic Indian celebrations and cravings.</p>
         <div style="display: flex; gap: 1rem; align-items: center; justify-content: center; flex-wrap: wrap;">
@@ -293,6 +329,16 @@
         <img src="https://files.manuscdn.com/user_upload_by_module/session_file/87957480/MptnwRUJzkLMwKvB.jpeg" alt="Delicious Gulab Jamun" class="hero-image">
     </div>
 </section>
+
+<!-- STORY / AUTHENTICITY SECTION -->
+<div class="container" style="margin-bottom: 0;">
+    <div class="story-section">
+        <h2>Our 50-Year-Old Heritage Recipe</h2>
+        <p>Our Gulab Jamuns are made from an authentic, cherished <strong>50-year-old family recipe</strong> passed down through generations. Every batch is crafted with patience, love, and strict attention to traditional techniques—using pure khoya and slow-simmered rose and cardamom syrup.</p>
+        <p>Whenever friends and family have come to our home and tasted them, the feedback has been overwhelmingly amazing. Everyone insisted we share this wonderful taste with the wider community.</p>
+        <p><strong>Now you have a chance to experience this legendary 50-year-old flavor</strong> — delivered fresh right to your door.</p>
+    </div>
+</div>
 
 <div class="features">
     <div class="feature-box">
@@ -358,13 +404,13 @@
 <div class="modal" id="successModal">
     <div class="modal-content">
         <h3>Order Received! 🎉</h3>
-        <p id="modalMessage">Thank you! Your fresh Gulab Jamun order has been securely placed. We will contact you via phone/WhatsApp shortly to confirm delivery time.</p>
+        <p id="modalMessage">Thank you! Your fresh Gulab Jamun order from Nosh, India has been securely placed. We will contact you via phone/WhatsApp shortly to confirm delivery time.</p>
         <button class="btn-close" onclick="closeModal()">Awesome</button>
     </div>
 </div>
 
 <footer>
-    <p>&copy; 2026 Shahi Royal Sweets Australia. Authentic Homemade Mithai Delivered Fresh.</p>
+    <p>&copy; 2026 Nosh, India. Authentic Homemade Mithai Delivered Fresh.</p>
 </footer>
 
 <script>
@@ -382,7 +428,7 @@
         const address = document.getElementById('address').value;
 
         // Construct confirmation text
-        document.getElementById('modalMessage').innerHTML = `Thank you, <strong>${name}</strong>! Your order for <strong>${pkg}</strong> with <strong>Free Delivery</strong> has been placed successfully.<br><br>We will confirm your delivery via WhatsApp/SMS at <strong>${phone}</strong>.`;
+        document.getElementById('modalMessage').innerHTML = `Thank you, <strong>${name}</strong>! Your order for <strong>${pkg}</strong> from <strong>Nosh, India</strong> with <strong>Free Delivery</strong> has been placed successfully.<br><br>We will confirm your delivery via WhatsApp/SMS at <strong>${phone}</strong>.`;
         document.getElementById('successModal').style.display = 'flex';
     }
 
