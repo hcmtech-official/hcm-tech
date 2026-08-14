@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nosh, India | Authentic Homemade Gulab Jamun Delivered Fresh</title>
+    <title>Nosh India | Authentic Homemade Sweets Delivered Fresh</title>
     <style>
         :root {
             --primary: #5c1d24;
@@ -26,11 +26,34 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             text-align: center;
-            padding: 1.5rem 1rem;
+            padding: 1.2rem 1rem;
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-svg {
+            width: 36px;
+            height: 36px;
+            fill: var(--accent);
+        }
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white;
+            font-family: serif;
+        }
+        .logo-text span {
+            color: var(--accent);
         }
         .free-delivery-banner {
             background-color: var(--accent);
@@ -94,17 +117,6 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-        .badge {
-            display: inline-block;
-            background: rgba(212, 175, 55, 0.15);
-            color: #b38f27;
-            padding: 0.4rem 1rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--accent);
-        }
         .heritage-badge {
             display: inline-flex;
             align-items: center;
@@ -121,7 +133,7 @@
         }
         .container {
             max-width: 800px;
-            margin: 0 auto 4rem;
+            margin: 0 auto 3rem;
             padding: 0 1.5rem;
         }
         .story-section {
@@ -129,7 +141,7 @@
             border-left: 5px solid var(--accent);
             padding: 2.5rem;
             border-radius: 0 16px 16px 0;
-            margin: 2rem auto 4rem;
+            margin: 2rem auto;
             max-width: 800px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.04);
         }
@@ -144,6 +156,51 @@
             margin-bottom: 1rem;
             line-height: 1.7;
         }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            border: 1px solid #f0e6df;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .product-info h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        .product-info p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
         .card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -157,48 +214,6 @@
             text-align: center;
             font-size: 1.8rem;
         }
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .price-option {
-            border: 2px solid #e8d7d0;
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        .price-option:hover, .price-option.selected {
-            border-color: var(--primary);
-            background-color: #fcf6f4;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(92,29,36,0.1);
-        }
-        .price-option input {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            accent-color: var(--primary);
-        }
-        .price-option h3 {
-            color: var(--primary);
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        .price-option .price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 0.5rem;
-        }
-        .price-option .desc {
-            font-size: 0.85rem;
-            color: var(--text-light);
-        }
         .form-group {
             margin-bottom: 1.2rem;
         }
@@ -208,18 +223,30 @@
             margin-bottom: 0.4rem;
             color: var(--primary);
         }
-        .form-group input, .form-group textarea {
+        .form-group select, .form-group input, .form-group textarea {
             width: 100%;
             padding: 0.9rem 1rem;
             border: 1px solid #dcd6d0;
             border-radius: 8px;
             font-size: 1rem;
             transition: border 0.2s;
+            background: white;
         }
-        .form-group input:focus, .form-group textarea:focus {
+        .form-group select:focus, .form-group input:focus, .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(92,29,36,0.1);
+        }
+        .total-display {
+            background: #fcf6f4;
+            border: 1px dashed var(--secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
         }
         .btn-order {
             display: block;
@@ -311,7 +338,14 @@
 </div>
 
 <header>
-    <h2 style="font-size: 1.4rem; letter-spacing: 0.5px;">Nosh, India</h2>
+    <div class="logo-container">
+        <!-- Custom CSS/SVG Paisley & Spice Motif Logo -->
+        <svg class="logo-svg" viewBox="0 0 24 24">
+            <path d="M12 2C8 2 5 5 5 9c0 3.5 2.5 6.5 6 7.5V20h2v-3.5c3.5-1 6-4 6-7.5 0-4-3-7-7-7zm0 12c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5z"/>
+            <path d="M12 22v-1h-2v1c0 .55.45 1 1 1s1-.45 1-1z"/>
+        </svg>
+        <div class="logo-text">Nosh <span>India</span></div>
+    </div>
 </header>
 
 <section class="hero">
@@ -319,8 +353,8 @@
         <div class="heritage-badge">
             👑 Crafted from a 50-Year-Old Family Recipe
         </div>
-        <h1>Melt-in-Your-Mouth Royal Gulab Jamun</h1>
-        <p>Crafted with pure khoya, infused with aromatic cardamom and rose-scented sugar syrup. Prepared fresh upon order for authentic Indian celebrations and cravings.</p>
+        <h1>Authentic Homemade Sweets, Delivered Fresh</h1>
+        <p>Experience the legendary softness of our traditional Gulab Jamun and rich, decadent Milk Cake. Crafted with pure khoya and authentic spices for true Indian celebrations.</p>
         <div style="display: flex; gap: 1rem; align-items: center; justify-content: center; flex-wrap: wrap;">
             <a href="#order-section" class="btn-order" style="display: inline-block; padding: 0.9rem 2rem; margin-top: 0; text-decoration: none;">Order Fresh Now</a>
         </div>
@@ -330,11 +364,38 @@
     </div>
 </section>
 
+<!-- PRODUCTS SHOWCASE -->
+<div class="container" style="max-width: 1000px; margin-bottom: 1rem;">
+    <h2 style="text-align: center; color: var(--primary); margin-bottom: 2rem; font-size: 2rem;">Our Signature Sweets</h2>
+    <div class="products-grid" style="margin: 0;">
+        <div class="product-card">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/87957480/MptnwRUJzkLMwKvB.jpeg" alt="Gulab Jamun" class="product-img">
+            <div class="product-info">
+                <div>
+                    <h3>Royal Gulab Jamun</h3>
+                    <p>Deep-fried golden khoya spheres soaked in rose-scented cardamom sugar syrup. Wonderfully spongy and rich.</p>
+                </div>
+                <div class="product-price">$1.50 <span style="font-size: 0.9rem; font-weight: normal; color: var(--text-light);">/ piece</span></div>
+            </div>
+        </div>
+        <div class="product-card">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/87957480/sEfBwvWXAHRRrhTw.jpg" alt="Milk Cake" class="product-img">
+            <div class="product-info">
+                <div>
+                    <h3>Traditional Milk Cake (Kalakand)</h3>
+                    <p>A decadent, grainy sweet made by reducing full-cream milk with a hint of ghee and cardamom, garnished with pistachios.</p>
+                </div>
+                <div class="product-price">$32.00 <span style="font-size: 0.9rem; font-weight: normal; color: var(--text-light);">/ kg</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- STORY / AUTHENTICITY SECTION -->
-<div class="container" style="margin-bottom: 0;">
+<div class="container">
     <div class="story-section">
         <h2>Our 50-Year-Old Heritage Recipe</h2>
-        <p>Our Gulab Jamuns are made from an authentic, cherished <strong>50-year-old family recipe</strong> passed down through generations. Every batch is crafted with patience, love, and strict attention to traditional techniques—using pure khoya and slow-simmered rose and cardamom syrup.</p>
+        <p>At Nosh India, our sweets are made from an authentic, cherished <strong>50-year-old family recipe</strong> passed down through generations. Every batch is crafted with patience, love, and strict attention to traditional techniques—using pure khoya and slow-simmered rose and cardamom syrup.</p>
         <p>Whenever friends and family have come to our home and tasted them, the feedback has been overwhelmingly amazing. Everyone insisted we share this wonderful taste with the wider community.</p>
         <p><strong>Now you have a chance to experience this legendary 50-year-old flavor</strong> — delivered fresh right to your door.</p>
     </div>
@@ -357,28 +418,43 @@
 
 <div class="container" id="order-section">
     <div class="card">
-        <h2>Select Your Portion & Order</h2>
+        <h2>Place Your Order</h2>
         <form id="orderForm" onsubmit="handleOrder(event)">
-            <label style="display: block; font-weight: 600; margin-bottom: 0.8rem; color: var(--primary);">Choose Package:</label>
-            <div class="pricing-grid">
-                <label class="price-option selected" onclick="selectOption(this)">
-                    <input type="radio" name="package" value="Box of 10 Pieces" checked>
-                    <h3>Box of 10</h3>
-                    <div class="price">$18</div>
-                    <div class="desc">Perfect for family tea time</div>
-                </label>
-                <label class="price-option" onclick="selectOption(this)">
-                    <input type="radio" name="package" value="1 KG Party Pack (~25 pcs)">
-                    <h3>1 KG Party Pack</h3>
-                    <div class="price">$32</div>
-                    <div class="desc">Approx. 25-30 pieces in rich syrup</div>
-                </label>
-                <label class="price-option" onclick="selectOption(this)">
-                    <input type="radio" name="package" value="2 KG Family Feast (~55 pcs)">
-                    <h3>2 KG Family Feast</h3>
-                    <div class="price">$58</div>
-                    <div class="desc">Best value for guests & parties</div>
-                </label>
+            
+            <div class="form-group">
+                <label for="productSelect">Select Product</label>
+                <select id="productSelect" onchange="updatePricingForm()">
+                    <option value="gulab_jamun">Royal Gulab Jamun ($1.50 / pc)</option>
+                    <option value="milk_cake">Traditional Milk Cake ($32.00 / kg)</option>
+                </select>
+            </div>
+
+            <!-- Gulab Jamun Quantity Selector -->
+            <div class="form-group" id="gjGroup">
+                <label for="gjQty">Select Quantity (Pieces)</label>
+                <select id="gjQty" onchange="calculateTotal()">
+                    <option value="10">10 Pieces ($15.00)</option>
+                    <option value="20">20 Pieces ($30.00)</option>
+                    <option value="30" selected>30 Pieces ($45.00)</option>
+                    <option value="40">40 Pieces ($60.00)</option>
+                    <option value="50">50 Pieces ($75.00)</option>
+                    <option value="100">100 Pieces - Party Pack ($150.00)</option>
+                </select>
+            </div>
+
+            <!-- Milk Cake Quantity Selector -->
+            <div class="form-group" id="mcGroup" style="display: none;">
+                <label for="mcQty">Select Weight (Kilograms)</label>
+                <select id="mcQty" onchange="calculateTotal()">
+                    <option value="0.5">0.5 KG ($16.00)</option>
+                    <option value="1" selected>1.0 KG ($32.00)</option>
+                    <option value="1.5">1.5 KG ($48.00)</option>
+                    <option value="2">2.0 KG ($64.00)</option>
+                </select>
+            </div>
+
+            <div class="total-display" id="totalDisplay">
+                Total: $45.00 (Free Delivery)
             </div>
 
             <div class="form-group">
@@ -404,37 +480,78 @@
 <div class="modal" id="successModal">
     <div class="modal-content">
         <h3>Order Received! 🎉</h3>
-        <p id="modalMessage">Thank you! Your fresh Gulab Jamun order from Nosh, India has been securely placed. We will contact you via phone/WhatsApp shortly to confirm delivery time.</p>
+        <p id="modalMessage">Thank you! Your fresh order from Nosh India has been securely placed. We will contact you via phone/WhatsApp shortly to confirm delivery time.</p>
         <button class="btn-close" onclick="closeModal()">Awesome</button>
     </div>
 </div>
 
 <footer>
-    <p>&copy; 2026 Nosh, India. Authentic Homemade Mithai Delivered Fresh.</p>
+    <p>&copy; 2026 Nosh India. Authentic Homemade Mithai Delivered Fresh.</p>
 </footer>
 
 <script>
-    function selectOption(element) {
-        document.querySelectorAll('.price-option').forEach(opt => opt.classList.remove('selected'));
-        element.classList.add('selected');
-        element.querySelector('input').checked = true;
+    function updatePricingForm() {
+        const prod = document.getElementById('productSelect').value;
+        const gjGroup = document.getElementById('gjGroup');
+        const mcGroup = document.getElementById('mcGroup');
+
+        if (prod === 'gulab_jamun') {
+            gjGroup.style.display = 'block';
+            mcGroup.style.display = 'none';
+        } else {
+            gjGroup.style.display = 'none';
+            mcGroup.style.display = 'block';
+        }
+        calculateTotal();
+    }
+
+    function calculateTotal() {
+        const prod = document.getElementById('productSelect').value;
+        let total = 0;
+        let summaryText = '';
+
+        if (prod === 'gulab_jamun') {
+            const qty = parseInt(document.getElementById('gjQty').value);
+            total = qty * 1.50;
+            summaryText = `${qty}x Gulab Jamun Pieces`;
+        } else {
+            const kg = parseFloat(document.getElementById('mcQty').value);
+            total = kg * 32.00;
+            summaryText = `${kg} KG Milk Cake`;
+        }
+
+        document.getElementById('totalDisplay').innerHTML = `Selected: ${summaryText}<br>Total: $${total.toFixed(2)} (Free Delivery)`;
     }
 
     function handleOrder(event) {
         event.preventDefault();
-        const pkg = document.querySelector('input[name="package"]:checked').value;
+        const prod = document.getElementById('productSelect').value;
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
         const address = document.getElementById('address').value;
 
-        // Construct confirmation text
-        document.getElementById('modalMessage').innerHTML = `Thank you, <strong>${name}</strong>! Your order for <strong>${pkg}</strong> from <strong>Nosh, India</strong> with <strong>Free Delivery</strong> has been placed successfully.<br><br>We will confirm your delivery via WhatsApp/SMS at <strong>${phone}</strong>.`;
+        let itemDesc = '';
+        if (prod === 'gulab_jamun') {
+            const qty = document.getElementById('gjQty').value;
+            itemDesc = `${qty}x Gulab Jamun Pieces`;
+        } else {
+            const kg = document.getElementById('mcQty').value;
+            itemDesc = `${kg} KG Milk Cake`;
+        }
+
+        document.getElementById('modalMessage').innerHTML = `Thank you, <strong>${name}</strong>! Your order for <strong>${itemDesc}</strong> from <strong>Nosh India</strong> with <strong>Free Delivery</strong> has been placed successfully.<br><br>We will confirm your delivery via WhatsApp/SMS at <strong>${phone}</strong>.`;
         document.getElementById('successModal').style.display = 'flex';
     }
 
     function closeModal() {
         document.getElementById('successModal').style.display = 'none';
         document.getElementById('orderForm').reset();
+        updatePricingForm();
+    }
+
+    // Initialize total on load
+    window.onload = function() {
+        calculateTotal();
     }
 </script>
 
