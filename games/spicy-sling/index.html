@@ -109,6 +109,26 @@
     text-decoration: none;
     transition: opacity 0.2s ease;
   }
+  .donate-btn-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .stripe-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 4px;
+    color: #635bff;
+    font-weight: 800;
+    font-size: 13px;
+    font-family: -apple-system, sans-serif;
+    flex-shrink: 0;
+  }
   .donate-btn:hover { opacity: 0.85; }
   .crypto-toggle-btn {
     display: inline-flex;
@@ -224,12 +244,14 @@
 
 <div class="donate-section">
   <p>Enjoyed the game? Support future ones 💛</p>
-  <a class="donate-btn" href="https://www.paypal.com/donate/?business=hcmtech.official@gmail.com&currency_code=AUD" target="_blank" rel="noopener">
-    🍜 Donate via PayPal
-  </a>
-  <a class="donate-btn" href="https://donate.stripe.com/cNi9AL5gW0Nf1kL6SLgEg00" target="_blank" rel="noopener" style="background:#635bff;color:#fff;margin-left:8px;">
-    💳 Donate via Card
-  </a>
+  <div class="donate-btn-stack">
+    <a class="donate-btn" href="https://www.paypal.com/donate/?business=hcmtech.official@gmail.com&currency_code=AUD" target="_blank" rel="noopener">
+      🍜 Donate via PayPal
+    </a>
+    <a class="donate-btn" href="https://donate.stripe.com/cNi9AL5gW0Nf1kL6SLgEg00" target="_blank" rel="noopener" style="background:#635bff;color:#fff;">
+      <span class="stripe-mark">S</span> Donate via Stripe
+    </a>
+  </div>
   <div class="crypto-toggle-wrap" style="margin-top:10px;">
     <button class="crypto-toggle-btn" id="cryptoToggleBtn" onclick="document.getElementById('cryptoPanel').classList.toggle('open')">
       ₿ Ξ ₮ &nbsp;Donate Crypto
